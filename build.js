@@ -34,7 +34,7 @@ const F = [
 // exact colour baked into each PNG so the product photo sits flush with no seam
 const KITS = [
   ['Home kit', '1500', '2 years', 'Front of shirt on the white home strip, worn every game at Ericstan Park.', 'assets/Kits/home-kit.png', '#000000'],
-  ['Home &amp; away kit', '2250', '2 years', 'Both strips, every fixture, home and away. The fullest season-long presence we offer.', 'assets/Kits/home-away-kit.png', '#f0e966'],
+  ['Home &amp; away kit', '2250', '2 years', 'Both strips, every fixture, home and away. The fullest season-long presence we offer.', 'assets/Kits/home-&-away-kit.png', '#f0e966'],
   ['Away kit', '1250', '2 years', 'Front of shirt on the away strip, seen at grounds right across the region.', 'assets/Kits/away-kit.png', '#000000'],
 ];
 
