@@ -28,6 +28,11 @@ const F = [
   ['24','APR','14:00','A','Essa Academy','Bolton United','Baguley Athletic'],
 ];
 
+const MONTH_NAMES = {
+  AUG: 'August', SEP: 'September', OCT: 'October', NOV: 'November', DEC: 'December',
+  JAN: 'January', FEB: 'February', MAR: 'March', APR: 'April',
+};
+
 // Source: Commercial Brochure.pdf (8pp), supplied by the club.
 // [name, price, term, blurb, perks]
 // photo/bg pairs come from the club's Zeus kit renders in assets/Kits/ — bg is the
@@ -40,46 +45,59 @@ const KITS = [
 
 const KIT_BENEFITS = [
   'Front of shirt branding',
-  'Digital branding &mdash; website &amp; social media',
-  'Hospitality &mdash; Lunch Club invite for 2, plus a Matchday Sponsor package for 4',
-  'Tickets &mdash; 2 to every club event, including our End of Season Presentation',
-  'Recognition &mdash; an End of Season Award presented in your company name',
-  'Signed shirt, from the chairman and players',
-  'Antique match ball',
+  'Digital branding on the website and social media',
+  'Lunch Club invite for 2, plus a Matchday Sponsor package for 4',
+  'Two tickets to every club event, including the End of Season Presentation',
+  'An End of Season Award presented in your company name',
+  'A signed shirt, from the chairman and players',
+  'An antique match ball',
 ];
 
 const PACKS = [
-  ['Player sponsor', '300', 'per player / per season',
+  ['Player sponsor', '300', 'per player, per season',
     ['Digital branding', 'Signed shirt', 'Event tickets']],
   ['Matchday sponsor', '400', 'per match',
-    ['Light refreshments &amp; drinks on matchday, up to 4 people', 'Private lounge access', 'Digital presence', 'Signed shirt', 'Antique football']],
-  ['Player warm-up shirt', '500', 'per team / 2 seasons',
+    ['Light refreshments and drinks on matchday, up to 4 people', 'Private lounge access', 'Digital presence', 'Signed shirt', 'Antique football']],
+  ['Player warm-up shirt', '500', 'per team, 2 seasons',
     ['Front of shirt branding', 'Digital branding', 'Signed shirt', 'Event tickets']],
-  ['Sleeve 4 Cause', '500', 'per team / 2 seasons',
+  ['Sleeve 4 Cause', '500', 'per team, 2 seasons',
     ['Sleeve branding for a charity of your choice', 'Digital branding', 'Signed shirt', 'Event tickets'],
     'Publicity for your chosen charity and your company at the same time.'],
   ['Video content', '1200', 'per season',
     ['Your logo on ALL video content produced by the club', 'Signed shirt', 'Event tickets']],
 ];
 
-const items = F.map(([d, m, time, ha, venue, home, away], i) => {
+const fixtureRow = ([d, m, time, ha, venue, home, away], i) => {
   const isHome = ha === 'H';
-  const cls = 'fixture' + (i === 0 ? ' next' : '');
   const tag = isHome
     ? '<span class="tag tag-home">Home</span>'
     : '<span class="tag tag-away">Away</span>';
-  const label = i === 0 ? '\n        <span class="next-label">Next match</span>' : '';
+  const label = i === 0 ? '\n          <span class="next-label">Next match</span>' : '';
   return [
-    `      <article class="${cls}" data-venue="${isHome ? 'home' : 'away'}">`,
-    `        <div class="fixture-date"><strong>${d}</strong><span>${m}<br>SAT</span></div>`,
-    `        <div class="fixture-teams">`,
-    `          <small class=\"league\">Manchester League &middot; Division One</small>`,
-    `          <h2>${home} <b>v</b> ${away}</h2>`,
-    `          <span class="venue">${tag}${time} &middot; ${venue}</span>`,
-    `        </div>${label}`,
-    `      </article>`,
+    `        <article class="fixture${i === 0 ? ' next' : ''}" data-venue="${isHome ? 'home' : 'away'}">`,
+    `          <div class="fixture-date"><strong>${d}</strong><span>Sat</span></div>`,
+    `          <div class="fixture-teams">`,
+    `            <small class="league">Manchester League, Division One</small>`,
+    `            <h2>${home} <b>v</b> ${away}</h2>`,
+    `            <span class="venue">${tag}${venue}</span>`,
+    `          </div>${label}`,
+    `          <p class="fixture-kick">${time}</p>`,
+    `        </article>`,
   ].join('\n');
-}).join('\n');
+};
+
+// fixtures run in date order, so a month break is simply a change of the month field
+const monthGroups = F.reduce((groups, fixture, i) => {
+  const last = groups[groups.length - 1];
+  if (!last || last.month !== fixture[1]) groups.push({ month: fixture[1], rows: [[fixture, i]] });
+  else last.rows.push([fixture, i]);
+  return groups;
+}, []);
+
+const items = monthGroups.map(({ month, rows }) => `      <section class="month">
+        <h2 class="month-head">${MONTH_NAMES[month]}</h2>
+${rows.map(([fixture, i]) => fixtureRow(fixture, i)).join('\n')}
+      </section>`).join('\n');
 
 const homeCount = F.filter(f => f[3] === 'H').length;
 
@@ -87,7 +105,7 @@ const nav = `
   <header class="site-header">
     <div class="topline">
       <div class="container topbar">
-        <span>Ericstan Park &middot; Wythenshawe, Manchester</span>
+        <span>Ericstan Park, Wythenshawe, Manchester</span>
         <a href="mailto:club@baguleyathletic.co.uk">club@baguleyathletic.co.uk</a>
       </div>
     </div>
@@ -101,8 +119,8 @@ const nav = `
           <a href="story.html">The Club</a>
           <div class="submenu">
             <a href="story.html">Our Story</a>
-            <a href="index.html#story">Our People</a>
-            <a href="index.html#story">History</a>
+            <a href="story.html#vision">Our People</a>
+            <a href="story.html#vision">History</a>
           </div>
         </div>
         <div class="nav-item">
@@ -141,7 +159,7 @@ const nav = `
           <a href="fixtures.html">Fixtures</a>
         </div>
       </details>
-      <a class="button button-dark nav-cta" href="fixtures.html">Fixtures <span aria-hidden="true">&rarr;</span></a>
+      <a class="button button-dark nav-cta" href="fixtures.html">Fixtures</a>
     </div>
   </header>`;
 
@@ -158,6 +176,7 @@ const footer = `
       <div>
         <p class="footer-label">Explore</p>
         <a href="index.html">Home</a>
+        <a href="fixtures.html">Fixtures</a>
         <a href="story.html">Our story</a>
         <a href="commercial.html">Commercial hub</a>
         <a href="events.html">Events</a>
@@ -183,6 +202,8 @@ const page = (title, description, main) => `<!doctype html>
   <meta name="description" content="${description}">
   <title>${title}</title>
   <link rel="icon" href="assets/badge-white-hd.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -202,7 +223,7 @@ ${footer}
 /* ---------------------------------------------------------------- fixtures */
 
 const fixturesMain = `    <section class="page-heading container">
-      <p class="eyebrow"><i></i> Manchester League &middot; Division One</p>
+      <p class="section-mark">Manchester League, Division One</p>
       <h1>First team<br><em>fixtures.</em></h1>
       <p class="lede">Every date, every opponent, every chance to get behind the Badgers. Home games at Ericstan Park.</p>
     </section>
@@ -246,7 +267,7 @@ ${perks.map(p => `            <li>${p}</li>`).join('\n')}
         </article>`).join('\n');
 
 const commercialMain = `    <section class="page-heading container">
-      <p class="eyebrow"><i></i> Commercial hub</p>
+      <p class="section-mark">Commercial hub</p>
       <h1>Partner with<br><em>the Badgers.</em></h1>
       <p class="lede">Grassroots sponsorship is usually a begging ask. We would rather it ran both ways &mdash; visibility, connection and real value for money.</p>
     </section>
@@ -262,18 +283,19 @@ const commercialMain = `    <section class="page-heading container">
 
     <section class="container commercial-intro">
       <div class="intro-grid">
+        <p class="section-mark">Why partner with us</p>
         <h2>Identity and<br><em>presence.</em></h2>
         <div>
           <p>Since joining we have gained real momentum, on the pitch and off it. In large part that has come from focusing on two core principles &mdash; identity and presence &mdash; and the two go hand in hand.</p>
           <p>Identity means smart new kits and new training and travel apparel, so that players, volunteers and prospective commercial partners can feel proud of what we stand for and how we look. Presence means being involved, deeply, in the local community.</p>
           <p>We have gifted front of shirt sponsorship to two charities. The home kit carries the logo of <strong>BW3</strong>, funded by businesses to invest in local schoolchildren. The away shirt carries <strong>Woodhouse Park Family Centre</strong>, a not-for-profit free childcare programme for families that need it.</p>
-          <cite>David Platt &middot; Club Chairman</cite>
+          <cite>David Platt<span>Club Chairman</span></cite>
         </div>
       </div>
     </section>
 
     <section class="container packages" id="kit">
-      <p class="eyebrow"><i></i> Kit sponsorship</p>
+      <p class="section-mark">Kit sponsorship</p>
       <h2 class="section-title">Front of shirt.</h2>
       <div class="tier-grid">
 ${tiers}
@@ -287,7 +309,7 @@ ${KIT_BENEFITS.map(b => `          <li>${b}</li>`).join('\n')}
     </section>
 
     <section class="container packages" id="packages">
-      <p class="eyebrow"><i></i> Packages &amp; perks</p>
+      <p class="section-mark">Packages and perks</p>
       <h2 class="section-title">Other ways in.</h2>
       <div class="pack-grid">
 ${packs}
@@ -295,7 +317,7 @@ ${packs}
     </section>
 
     <section class="container packages" id="advertising">
-      <p class="eyebrow"><i></i> Pitch &amp; stadium advertising</p>
+      <p class="section-mark">Pitch and stadium advertising</p>
       <h2 class="section-title">Seen all week.</h2>
       <div class="advert-grid">
         <article class="advert">
@@ -312,7 +334,7 @@ ${packs}
     <section class="commercial-cta" id="brochure">
       <div class="container cta-inner">
         <div>
-          <p class="eyebrow"><i></i> Thank you for your consideration</p>
+          <p class="label">Talk to us</p>
           <h2>Let's shape a<br><em>package together.</em></h2>
           <p class="cta-copy">The packages here are our opening ideas. We would be very open to learning what you need as a business, and how we can shape them to give you that.</p>
         </div>
@@ -344,7 +366,7 @@ const eventCards = EVENTS.map(([photo, caption]) => `        <figure class="even
         </figure>`).join('\n');
 
 const eventsMain = `    <section class="page-heading container">
-      <p class="eyebrow"><i></i> Club life</p>
+      <p class="section-mark">Club life</p>
       <h1>Moments from<br><em>the season.</em></h1>
       <p class="lede">Sponsorship handovers, charity challenges and life around Ericstan Park &mdash; a look at what being part of the club actually looks like.</p>
     </section>
@@ -371,10 +393,10 @@ const OUT = [
     eventsMain)],
 ];
 
-// `node build.js fixtures.html` still writes just that page; no args writes both.
+// `node build.js fixtures.html` still writes just that page; no args writes all three.
 const only = process.argv[2];
 OUT.filter(([f]) => !only || f === only).forEach(([file, html]) => {
   fs.writeFileSync(file, html);
   console.log('wrote', file, html.length, 'bytes');
 });
-console.log(F.length, 'fixtures (', homeCount, 'home ),', KITS.length + PACKS.length, 'packages');
+console.log(F.length, 'fixtures (', homeCount, 'home ) across', monthGroups.length, 'months,', KITS.length + PACKS.length, 'packages');
