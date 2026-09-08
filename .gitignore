@@ -1,0 +1,14 @@
+# Wix source-of-truth / design-reference dumps (kept locally only)
+HomePage/
+Fixtures/
+Reference Score cards and body football goal post net/
+Reference hero section from another winning website/
+Reference our story page/
+
+# Client brochure PDF (not part of the site build)
+assets/commercial-brochure.pdf
+
+# Unreferenced assets
+assets/badge-white.png
+assets/club-photo.png
+assets/crest-banner.png

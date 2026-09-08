@@ -1,0 +1,424 @@
+/* Baguley Athletic FC — The Badgers
+   Palette: white first, black used like the badger stripe. */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root{
+  --ink:#0c0d0d;          /* badger black */
+  --muted:#6c6f6e;
+  --body:#555856;
+  --paper:#ffffff;        /* the site is white now */
+  --paper-tint:#f6f6f4;   /* barely-there section tint */
+  --line:#e6e6e2;
+  --line-strong:#c9c9c3;
+  --away:#ede77c;         /* away kit yellow — used only to tag away fixtures */
+  --max:1180px;
+  --stripe:repeating-linear-gradient(115deg,var(--ink) 0 9px,transparent 9px 20px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Space Grotesk',system-ui,sans-serif;font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+.container{width:min(var(--max),calc(100% - 64px));margin-inline:auto}
+h1,h2,h3{font-weight:400;line-height:.88;margin:0;letter-spacing:-.01em}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,9.5vw,138px);letter-spacing:.012em}
+h1 em,h2 em,h3 em{font-style:normal;color:var(--muted)}
+
+/* ---------- shared bits ---------- */
+.eyebrow{font-size:11px;letter-spacing:.17em;text-transform:uppercase;font-weight:700;margin:0 0 20px;display:flex;align-items:center;gap:10px}
+.eyebrow i{width:26px;height:3px;background:var(--ink);display:inline-block;flex:none;font-style:normal}
+.stripes{height:10px;background:var(--stripe);opacity:.9}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:16px;padding:14px 22px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.1em;border:1.5px solid var(--ink);transition:background .18s,color .18s,transform .18s}
+.button:hover{transform:translateY(-2px)}
+.button-dark{background:var(--ink);color:#fff}
+.button-dark:hover{background:var(--paper);color:var(--ink)}
+.button-light{background:transparent;color:var(--ink)}
+.button-light:hover{background:var(--ink);color:#fff}
+.button-onblack{border-color:#fff;color:#fff}
+.button-onblack:hover{background:#fff;color:var(--ink)}
+.text-link{font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.11em;border-bottom:2px solid var(--ink);padding-bottom:4px;white-space:nowrap}
+.text-link:hover{opacity:.55}
+
+/* Club badge artwork is white, so it always sits in a black roundel */
+.badge{background:var(--ink);border-radius:50%;display:grid;place-items:center;flex:none}
+.badge img{object-fit:contain}
+
+/* ---------- header ---------- */
+.topline{background:var(--ink);color:#b9bcba;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:9px 0}
+.topbar a:hover{color:#fff}
+.site-header{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between;min-height:86px;gap:28px}
+.brand{display:flex;align-items:center;gap:12px;line-height:1}
+.brand .badge{width:46px;height:46px}
+.brand .badge img{width:29px;height:29px}
+.brand b{font-size:17px;letter-spacing:-.03em;display:block}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-top:6px}
+nav{display:flex;gap:24px;margin-left:auto;align-items:center}
+nav>a,.nav-item>a{font-size:12.5px;font-weight:600;padding-bottom:3px;border-bottom:2px solid transparent;white-space:nowrap;display:inline-block}
+nav>a:hover,.nav-item>a:hover,.nav-item:hover>a{border-color:var(--line-strong)}
+.nav-item{position:relative}
+/* bridge the gap so the menu survives the trip from label to panel */
+.nav-item:after{content:'';position:absolute;left:0;right:0;top:100%;height:18px}
+.submenu{position:absolute;left:-16px;top:calc(100% + 18px);min-width:198px;z-index:30;
+  background:var(--paper);border:1px solid var(--line);box-shadow:0 18px 36px rgba(0,0,0,.10);padding:7px 0;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s}
+.nav-item:hover .submenu,.nav-item:focus-within .submenu{opacity:1;visibility:visible;transform:none}
+.submenu a{display:block;padding:9px 18px;font-size:12.5px;font-weight:500;white-space:nowrap;border:0}
+.submenu a:hover{background:var(--paper-tint)}
+.mobile-nav{display:none;margin-left:auto}
+.mobile-nav>summary{list-style:none;cursor:pointer;width:42px;height:42px;display:grid;align-content:center;justify-items:center;gap:5px;border:1px solid var(--line-strong)}
+.mobile-nav>summary::-webkit-details-marker{display:none}
+.mobile-nav>summary i{width:18px;height:2px;background:var(--ink);display:block}
+.mobile-nav[open]>summary{background:var(--ink);border-color:var(--ink)}
+.mobile-nav[open]>summary i{background:#fff}
+.mobile-panel{position:absolute;left:0;right:0;top:100%;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(0,0,0,.08);padding:6px 18px 16px}
+.mobile-panel a{display:block;padding:13px 0;font-weight:600;font-size:15px;border-bottom:1px solid var(--line)}
+.mobile-panel a:last-child{border-bottom:0}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:end;gap:60px;padding-top:62px;padding-bottom:52px}
+.hero-side{padding-bottom:10px}
+.hero-intro{font-size:19px;max-width:400px;margin:0 0 30px;color:var(--body)}
+.hero-intro strong{color:var(--ink)}
+.hero-actions{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+/* --- hero stage: orbiting photos around the crest, goal net beneath --- */
+.stage{position:relative;background:var(--ink);height:520px;overflow:hidden;display:grid;place-items:center}
+
+.orbit{position:relative;z-index:1;width:100%;height:360px;margin-top:-34px;perspective:1300px;transform-style:preserve-3d}
+
+/* Each card carries its own orbit. rotateY(A) translateZ(R) puts it on the ring;
+   the trailing rotateY(-A) cancels the spin so the photo always faces the viewer.
+   No z-index anywhere — depth sorting decides what passes in front of the crest. */
+.orb{position:absolute;top:50%;left:50%;width:230px;height:150px;margin:-75px 0 0 -115px;
+  border:2px solid rgba(255,255,255,.9);background:var(--ink);overflow:hidden;
+  transform:rotateY(calc(var(--i) * 90deg)) translateZ(340px) rotateY(calc(var(--i) * -90deg));
+  animation:orb0 28s linear infinite}
+.orb:nth-of-type(2){animation-name:orb1}
+.orb:nth-of-type(3){animation-name:orb2}
+.orb:nth-of-type(4){animation-name:orb3}
+.orb img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.06)}
+.orb:hover img{filter:none}
+.orbit:hover .orb{animation-play-state:paused}
+
+@keyframes orb0{from{transform:rotateY(0deg) translateZ(340px) rotateY(0deg)}
+                to{transform:rotateY(360deg) translateZ(340px) rotateY(-360deg)}}
+@keyframes orb1{from{transform:rotateY(90deg) translateZ(340px) rotateY(-90deg)}
+                to{transform:rotateY(450deg) translateZ(340px) rotateY(-450deg)}}
+@keyframes orb2{from{transform:rotateY(180deg) translateZ(340px) rotateY(-180deg)}
+                to{transform:rotateY(540deg) translateZ(340px) rotateY(-540deg)}}
+@keyframes orb3{from{transform:rotateY(270deg) translateZ(340px) rotateY(-270deg)}
+                to{transform:rotateY(630deg) translateZ(340px) rotateY(-630deg)}}
+
+.orbit-core{position:absolute;top:50%;left:50%;width:156px;height:156px;margin:-78px 0 0 -78px;
+  border-radius:50%;display:grid;place-items:center;background:var(--ink);transform:translateZ(0);perspective:600px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.28),0 0 60px 18px rgba(0,0,0,.85)}
+.crest-flip{position:relative;width:92px;height:92px;transform-style:preserve-3d;animation:flip 8s linear infinite}
+@keyframes flip{to{transform:rotateY(360deg)}}
+/* two faces so the badge reads correctly on both halves of the turn */
+.crest-face{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backface-visibility:hidden}
+.crest-back{transform:rotateY(180deg)}
+
+.stage-cap{position:absolute;left:0;right:0;bottom:44px;z-index:3;margin:0;text-align:center;color:#fff;font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+.stage-cap span{opacity:.4;padding:0 6px}
+
+/* goal net: two diagonal rules crossing = diamond mesh, behind everything */
+.net{position:absolute;inset:0;z-index:0;pointer-events:none}
+.net:after{content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(58deg,rgba(255,255,255,.26) 0 1px,transparent 1px 19px),
+    repeating-linear-gradient(-58deg,rgba(255,255,255,.26) 0 1px,transparent 1px 19px)}
+/* crossbar across the top of the goal */
+.net:before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:rgba(255,255,255,.5)}
+
+
+/* ---------- ticker: the black band ---------- */
+.ticker{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap}
+.ticker-track{display:flex;justify-content:space-around;align-items:center;gap:34px;padding:14px 18px;font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.09em}
+.ticker b{font-family:'Space Grotesk',sans-serif;font-size:15px;opacity:.5}
+
+/* ---------- story ---------- */
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:70px;padding-top:110px;padding-bottom:88px}
+.intro h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,6vw,80px)}
+.intro-copy{max-width:440px;align-self:end}
+.intro-copy p{font-size:18px;color:var(--body);margin:0 0 20px}
+.intro-copy p:last-of-type{margin-bottom:28px}
+
+/* ---------- feature cards ---------- */
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:100px}
+.feature-grid-3{grid-template-columns:1fr 1fr 1fr}
+.feature{min-height:390px;padding:38px;display:flex;flex-direction:column;align-items:flex-start}
+.feature h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,4.4vw,62px);margin-bottom:28px}
+.feature-dark{background:var(--ink);color:#fff}
+.feature-dark .eyebrow{color:#bfc2c0}
+.feature-dark .eyebrow i{background:#fff}
+.feature-dark h3 em{color:#8d918f}
+.feature-meta{margin-top:auto;font-weight:600;font-size:17px}
+.feature-meta strong{opacity:.45;padding:0 9px;font-weight:500}
+.feature-date{width:100%;display:flex;justify-content:space-between;gap:12px;color:#a2a5a3;font-size:12px;border-top:1px solid #3a3c3c;padding-top:14px;margin:14px 0 26px;letter-spacing:.05em}
+.feature-light{background:var(--paper-tint);border:1px solid var(--line);justify-content:flex-end}
+.feature-light .eyebrow{margin-bottom:auto}
+.feature-light p:not(.eyebrow){max-width:330px;margin:0 0 26px;font-size:17px;color:var(--body)}
+
+/* ---------- story videos ---------- */
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:20px}
+.video-card{position:relative;margin:0;background:var(--ink);aspect-ratio:4/5;overflow:hidden}
+.video-card video{width:100%;height:100%;object-fit:cover;display:block}
+.video-card figcaption{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:18px 20px;color:#fff;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent)}
+.video-card figcaption i{width:20px;height:2px;background:#fff;display:inline-block;flex:none}
+
+/* ---------- chairman quote ---------- */
+.quote{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:78px 0;display:grid;grid-template-columns:auto 1fr;gap:52px;align-items:start}
+.quote .badge{width:96px;height:96px}
+.quote .badge img{width:60px;height:60px}
+.quote blockquote{margin:0;font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,3.2vw,44px);line-height:1.04;letter-spacing:.005em;max-width:20ch}
+.quote p{margin:24px 0 0;color:var(--body);max-width:640px}
+.quote cite{display:block;margin-top:26px;font-style:normal;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+
+/* ---------- partners ---------- */
+.partners{padding:74px 0 104px;text-align:center}
+.partners .eyebrow{justify-content:center}
+.partners-lede{max-width:60ch;margin:0 auto;color:var(--body);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:8px}
+.partner-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:38px;margin-top:30px}
+.partner-row img{height:52px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.62;transition:filter .25s,opacity .25s}
+.partner-row img:hover{filter:none;opacity:1}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--ink);color:#fff}
+.footer-main{display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;padding-top:64px;padding-bottom:56px}
+.brand-footer{margin-bottom:20px}
+.site-footer .brand .badge{background:#fff}
+.site-footer .brand .badge img{filter:invert(1)}
+.site-footer .brand small,.site-footer p{color:#a4a7a5}
+.footer-main>div>p:not(.footer-label){font-size:13px;line-height:1.75;margin:0 0 14px}
+.footer-main a:not(.brand){display:block;color:#d5d7d5;font-size:13px;margin:10px 0}
+.footer-main a:not(.brand):hover{color:#fff}
+.footer-label{color:#fff!important;font-size:10px!important;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin:0 0 4px!important}
+.footer-note{font-size:11px!important;color:#7c7f7d!important}
+.footer-bottom{border-top:1px solid #333535;display:flex;justify-content:space-between;gap:16px;padding:16px 0;color:#7c7f7d;font-size:11px;text-transform:uppercase;letter-spacing:.11em}
+
+
+/* ---------- next-match scoreboard ---------- */
+.board-wrap{padding-top:104px;padding-bottom:96px}
+.scoreboard{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:40px;
+  border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:44px 0;margin-top:6px}
+.sb-team{display:flex;align-items:center;gap:16px;margin-bottom:26px}
+.sb-badge{width:64px;height:64px}
+.sb-badge img{width:40px;height:40px}
+.sb-badge-away{font-family:'Bebas Neue',sans-serif;font-size:30px;color:#fff;letter-spacing:.04em}
+.sb-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,3.4vw,46px);line-height:.86;letter-spacing:.01em}
+.sb-line{display:flex;justify-content:space-between;gap:18px;margin:0 0 10px;padding-bottom:9px;
+  border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.09em;text-transform:uppercase;max-width:330px}
+.sb-line span{color:var(--muted)}
+.sb-line b{font-weight:700}
+.sb-right{text-align:right}
+.sb-right .sb-team{flex-direction:row;justify-content:flex-end}
+.sb-right .sb-line{margin-left:auto}
+
+.sb-c{text-align:center;padding-top:4px}
+.sb-kick{display:block;font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,7vw,92px);line-height:.8;letter-spacing:.01em}
+.dash{display:block;width:56px;height:5px;background:var(--ink);margin:22px auto 20px}
+.sb-day{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+.board-actions{display:flex;align-items:center;gap:26px;margin-top:30px;flex-wrap:wrap}
+
+@media(max-width:760px){
+  .board-wrap{padding-top:64px;padding-bottom:58px}
+  .scoreboard{grid-template-columns:1fr;gap:26px;padding:30px 0}
+  .sb-right{text-align:left}
+  .sb-right .sb-team{flex-direction:row-reverse;justify-content:flex-end}
+  .sb-right .sb-line{margin-left:0}
+  .sb-c{display:flex;align-items:center;gap:20px;text-align:left;padding:6px 0}
+  .dash{width:34px;height:4px;margin:0}
+  .sb-line{max-width:none}
+}
+
+/* ---------- fixtures page ---------- */
+.page-heading{padding-top:88px;padding-bottom:62px}
+.page-heading h1{font-size:clamp(72px,10.5vw,136px)}
+.page-heading .lede{max-width:400px;color:var(--body);font-size:18px;margin:26px 0 0}
+.fixtures-section{padding-bottom:104px}
+.fixture-toolbar{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:14px}
+.filters{display:flex;gap:6px}
+.filter{border:1px solid transparent;background:none;padding:7px 14px;color:var(--muted);font:600 12px 'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:.03em}
+.filter:hover{color:var(--ink)}
+.filter.active{color:#fff;background:var(--ink);border-color:var(--ink)}
+.fixture-count{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);white-space:nowrap}
+.fixture{display:flex;align-items:center;gap:30px;min-height:126px;border-bottom:1px solid var(--line);padding:14px 0}
+.fixture-date{width:104px;display:flex;align-items:center;gap:11px;flex:none}
+.fixture-date strong{font-family:'Bebas Neue',sans-serif;font-size:56px;font-weight:400;line-height:.78}
+.fixture-date span{font-size:10px;line-height:1.25;letter-spacing:.13em;color:var(--muted)}
+.fixture-teams{flex:1;min-width:0}
+.fixture .league{display:none}
+.fixture.next .league{display:block}
+.fixture-teams small{font-size:10px;color:var(--muted);letter-spacing:.13em;text-transform:uppercase}
+.fixture-teams h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,2.6vw,34px);margin:8px 0 8px}
+.fixture-teams h2 b{font-family:'Space Grotesk',sans-serif;font-size:12px;color:var(--muted);font-weight:500;padding:0 10px}
+.venue{display:flex;align-items:center;flex-wrap:wrap;row-gap:5px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;border:1px solid var(--line-strong);padding:3px 8px;margin-right:9px;color:var(--ink)}
+.tag-home{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tag-away{background:var(--away);color:var(--ink);border-color:var(--away)}
+.fixture.next{background:var(--ink);color:#fff;border-bottom:0;padding:22px 26px;margin-bottom:1px}
+.fixture.next .fixture-teams small,.fixture.next .venue{color:#a4a7a5}
+.fixture.next .fixture-teams h2 b{color:#8d918f}
+.fixture.next .tag{border-color:rgba(255,255,255,.55);color:#fff}
+.fixture.next .tag-home{background:#fff;color:var(--ink);border-color:#fff}
+.fixture.next .tag-away{border-color:var(--away)}
+.next-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;align-self:flex-start;flex:none;border:1px solid rgba(255,255,255,.45);padding:5px 10px}
+.fixture[hidden]{display:none}
+.no-results{padding:44px 0;color:var(--muted);font-size:14px}
+
+/* ---------- commercial hub ----------
+   Prices and package contents come from the club's Commercial Brochure;
+   the numbers live in the KITS / PACKS arrays in build.js. */
+.stat-band{background:var(--ink);color:#fff}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:46px 0}
+.stat-row div{display:flex;flex-direction:column;gap:9px}
+.stat-row strong{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4.4vw,58px);line-height:.82;font-weight:400}
+.stat-row span{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#a2a5a3;max-width:22ch}
+
+.commercial-intro{padding:96px 0 6px}
+.intro-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:60px;align-items:start}
+.intro-grid h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,72px)}
+.intro-grid p{margin:0 0 20px;color:var(--body);max-width:62ch}
+.intro-grid strong{color:var(--ink);font-weight:700}
+.intro-grid cite{display:block;margin-top:26px;font-style:normal;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+
+.packages{padding:88px 0 0}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,4.6vw,64px);margin-bottom:36px}
+
+/* kit tiers: the middle one is the bundle, so it carries the black */
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tier{border:1px solid var(--line);background:var(--paper-tint);display:flex;flex-direction:column;overflow:hidden}
+/* the photo panel's background is set inline per tier, sampled from that PNG's own
+   baked-in backdrop colour so the image sits flush with no visible seam */
+.tier-photo{display:flex;align-items:center;justify-content:center;min-height:200px;padding:20px}
+.tier-photo img{max-height:210px;width:auto;object-fit:contain}
+.tier-body{padding:28px 30px 32px;display:flex;flex-direction:column;flex:1}
+.tier h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,2.5vw,34px);margin-bottom:22px}
+.tier-price{font-family:'Bebas Neue',sans-serif;font-size:clamp(50px,6vw,80px);line-height:.8;margin:0}
+.tier-price span{font-size:.46em;vertical-align:super;margin-right:-.06em}
+.tier-term{margin:14px 0 22px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.tier-blurb{margin:auto 0 0;color:var(--body);font-size:15px;border-top:1px solid var(--line);padding-top:18px}
+.tier-featured{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tier-featured .tier-term{color:#a2a5a3}
+.tier-featured .tier-blurb{color:#c8cbc9;border-top-color:#3a3c3c}
+
+.benefits{border:1px solid var(--line);border-top:0;padding:38px 30px 40px;text-align:center}
+.benefits-head{margin:0 0 22px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.benefits ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.benefits li{border:1px solid var(--line-strong);padding:9px 15px;font-size:13px;color:var(--body)}
+
+.pack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pack{border:1px solid var(--line);padding:32px 28px 30px;display:flex;flex-direction:column}
+.pack h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,2.3vw,31px);margin-bottom:20px}
+.pack ul{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:9px}
+.pack li{font-size:14px;color:var(--body);padding-left:18px;position:relative}
+.pack li:before{content:'+';position:absolute;left:0;color:var(--ink);font-weight:700}
+.pack-price{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4vw,52px);line-height:.8;margin:auto 0 0;padding-top:20px;border-top:1px solid var(--line)}
+.pack-price span{font-size:.5em;vertical-align:super;margin-right:-.06em}
+.pack-term{margin:12px 0 0;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.pack-note{margin:16px 0 0;font-size:13px;color:var(--body);font-style:italic}
+
+.advert-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.advert{border:1px solid var(--line);background:var(--paper-tint);padding:36px 32px}
+.advert h3{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,2.4vw,33px);margin-bottom:20px}
+.advert p{margin:0;color:var(--body)}
+
+.commercial-cta{background:var(--ink);color:#fff;margin-top:104px}
+.cta-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;padding:88px 0;align-items:start}
+.commercial-cta .eyebrow{color:#bfc2c0}
+.commercial-cta .eyebrow i{background:#fff}
+.commercial-cta h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,4.8vw,66px)}
+.commercial-cta h2 em{color:#8d918f}
+.cta-copy{margin:26px 0 0;color:#c8cbc9;max-width:46ch}
+.cta-side{border-left:1px solid #3a3c3c;padding-left:44px}
+.cta-label{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#a2a5a3}
+.cta-name{margin:10px 0 0;font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1}
+.cta-mail{display:inline-block;margin:14px 0 30px;border-bottom:1px solid #6c6f6e;padding-bottom:3px;font-size:15px}
+.cta-mail:hover{border-bottom-color:#fff}
+.cta-note{margin:14px 0 0;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#a2a5a3}
+
+/* ---------- events gallery ---------- */
+.event-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;padding-bottom:100px}
+.event-card{margin:0;border:1px solid var(--line)}
+.event-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.event-card figcaption{padding:18px 20px;font-size:14px;color:var(--body);border-top:1px solid var(--line)}
+
+/* ---------- responsive ---------- */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:44px}
+  .stage{height:470px}
+  .hero{grid-template-columns:1fr;align-items:start;gap:26px}
+  .hero-side{padding-bottom:0}
+  .intro{grid-template-columns:1fr;gap:34px}
+  .intro-copy{align-self:start}
+  .feature-grid,.feature-grid-3{grid-template-columns:1fr}
+  .video-grid{grid-template-columns:1fr}
+  .quote{grid-template-columns:1fr;gap:28px}
+  .intro-grid{grid-template-columns:1fr;gap:30px}
+  .stat-row{grid-template-columns:1fr 1fr;gap:26px}
+  .tier-grid,.pack-grid{grid-template-columns:1fr 1fr}
+  .advert-grid{grid-template-columns:1fr}
+  .cta-inner{grid-template-columns:1fr;gap:44px}
+  .cta-side{border-left:0;border-top:1px solid #3a3c3c;padding:36px 0 0}
+}
+@media(max-width:760px){
+  .container{width:min(var(--max),calc(100% - 36px))}
+  .topbar span:last-child,.topbar a{display:none}
+  .nav-wrap{min-height:72px}
+  .nav-wrap nav,.nav-cta{display:none}
+  .mobile-nav{display:block}
+  .nav-wrap{position:relative}
+  .hero h1,.page-heading h1{font-size:clamp(50px,13.5vw,74px)}
+  .intro h2{font-size:clamp(42px,11vw,58px)}
+  .hero{padding-top:52px;padding-bottom:56px}
+  .stage{height:400px}
+  .orbit{height:260px;perspective:900px}
+  .orb{width:150px;height:98px;margin:-49px 0 0 -75px;animation-duration:32s}
+  @keyframes orb0{from{transform:rotateY(0deg) translateZ(180px) rotateY(0deg)}to{transform:rotateY(360deg) translateZ(180px) rotateY(-360deg)}}
+  @keyframes orb1{from{transform:rotateY(90deg) translateZ(180px) rotateY(-90deg)}to{transform:rotateY(450deg) translateZ(180px) rotateY(-450deg)}}
+  @keyframes orb2{from{transform:rotateY(180deg) translateZ(180px) rotateY(-180deg)}to{transform:rotateY(540deg) translateZ(180px) rotateY(-540deg)}}
+  @keyframes orb3{from{transform:rotateY(270deg) translateZ(180px) rotateY(-270deg)}to{transform:rotateY(630deg) translateZ(180px) rotateY(-630deg)}}
+  .orbit-core{width:112px;height:112px;margin:-56px 0 0 -56px}
+  .orbit-core img{width:66px;height:66px}
+  .stage-cap{bottom:26px;font-size:9px;letter-spacing:.16em}
+  .intro{padding-top:70px;padding-bottom:58px}
+  .feature{min-height:330px;padding:28px}
+  .quote{padding:56px 0}
+  .partners{padding:56px 0 70px}
+  .partner-row{gap:26px}
+  .partner-row img{height:40px}
+  .footer-main{grid-template-columns:1fr 1fr;gap:32px;padding-top:46px}
+  .footer-main>div:first-child{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;gap:6px;font-size:10px}
+  .page-heading{padding-top:56px;padding-bottom:48px}
+  .fixture-toolbar{flex-direction:column;align-items:flex-start;gap:12px}
+  .fixture{gap:16px;align-items:flex-start;padding:18px 0;min-height:0}
+  .fixture.next{padding:20px 16px;flex-wrap:wrap}
+  .fixture-date{width:62px;gap:6px}
+  .fixture-date strong{font-size:42px}
+  .fixture-date span{font-size:8px}
+  .fixture-teams h2{line-height:.98}
+  .next-label{display:none}
+  .stat-row{padding:34px 0}
+  .commercial-intro{padding-top:60px}
+  .packages{padding-top:60px}
+  .tier-grid,.pack-grid{grid-template-columns:1fr}
+  .tier-photo{min-height:170px;padding:16px}
+  .tier-photo img{max-height:170px}
+  .tier-body{padding:24px}
+  .pack{padding:26px 22px}
+  .benefits{padding:30px 22px 32px}
+  .benefits ul{justify-content:flex-start}
+  .advert{padding:28px 24px}
+  .commercial-cta{margin-top:70px}
+  .event-grid{grid-template-columns:1fr;padding-bottom:58px}
+  .cta-inner{padding:58px 0}
+}
