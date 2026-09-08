@@ -97,8 +97,8 @@ normalised deliberately — keep new assets to the same convention. Two hero ima
 fine in current browsers but blank on older ones; add `<picture>` fallbacks if the client needs wide
 support.
 
-`HomePage/` and `Fixtures/` are saved copies of the live Wix pages, kept as the **source of truth for
-content** — real fixture data, the chairman's quote, contact details and partner logos were extracted
-from them. The two `Reference …` folders are a separate site ("The Immortals") used as design reference
-for the orbit, goal net and scoreboard. All four folders are excluded in `.vercelignore` so they never
-deploy; `vercel.json` enables `cleanUrls`.
+`reference/HomePage/` and `reference/Fixtures/` are saved copies of the live Wix pages, kept as the
+**source of truth for content** — real fixture data, the chairman's quote, contact details and partner
+logos were extracted from them. The `reference/Reference …` folders are a separate site ("The
+Immortals") used as design reference for the orbit, goal net and scoreboard. The whole `reference/`
+directory is excluded in `.vercelignore` so it never deploys; `vercel.json` enables `cleanUrls`.
