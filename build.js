@@ -30,12 +30,12 @@ const F = [
 
 // Source: Commercial Brochure.pdf (8pp), supplied by the club.
 // [name, price, term, blurb, perks]
-// photo/bg pairs come from the club's Zeus kit renders in assets/kits/ — bg is the
+// photo/bg pairs come from the club's Zeus kit renders in assets/Kits/ — bg is the
 // exact colour baked into each PNG so the product photo sits flush with no seam
 const KITS = [
-  ['Home kit', '1500', '2 years', 'Front of shirt on the white home strip, worn every game at Ericstan Park.', 'assets/kits/home-kit.png', '#000000'],
-  ['Home &amp; away kit', '2250', '2 years', 'Both strips, every fixture, home and away. The fullest season-long presence we offer.', 'assets/kits/home-away-kit.png', '#f0e966'],
-  ['Away kit', '1250', '2 years', 'Front of shirt on the away strip, seen at grounds right across the region.', 'assets/kits/away-kit.png', '#000000'],
+  ['Home kit', '1500', '2 years', 'Front of shirt on the white home strip, worn every game at Ericstan Park.', 'assets/Kits/home-kit.png', '#000000'],
+  ['Home &amp; away kit', '2250', '2 years', 'Both strips, every fixture, home and away. The fullest season-long presence we offer.', 'assets/Kits/home-away-kit.png', '#f0e966'],
+  ['Away kit', '1250', '2 years', 'Front of shirt on the away strip, seen at grounds right across the region.', 'assets/Kits/away-kit.png', '#000000'],
 ];
 
 const KIT_BENEFITS = [

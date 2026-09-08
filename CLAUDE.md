@@ -41,7 +41,7 @@ generator instead:
 - `KITS`, `KIT_BENEFITS`, `PACKS` — the sponsorship prices and perks, transcribed from the club's
   Commercial Brochure PDF (a copy lives at `assets/commercial-brochure.pdf`, linked for download from
   the commercial page). These are the client's real prices; check the PDF before changing a number.
-  `KITS` also points each tier at its product photo in `assets/kits/` plus a `bg` hex — that colour is
+  `KITS` also points each tier at its product photo in `assets/Kits/` plus a `bg` hex — that colour is
   sampled from the PNG's own baked-in backdrop so the photo sits flush in its panel with no seam;
   resample it if a kit photo is ever replaced.
 - `EVENTS` — photo + caption pairs for the events gallery, sourced from `assets/events/`. Captions
