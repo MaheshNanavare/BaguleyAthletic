@@ -40,7 +40,14 @@ stylesheet and one script. `index.html` and `story.html` are hand-written; the o
 output — hand-edits to them are lost on the next run. Edit the data arrays or the templates in the
 generator instead:
 
-- `F` — all 24 fixtures, as `[day, month, time, H|A, venue, homeTeam, awayTeam]`
+- `fixturesMain` — **the published fixtures page is the league's live FA Full-Time widget**, not local
+  data. `FA_LRCODE` is the embed code the club admin generated; the widget script finds its container
+  by id (`lrep` + lrcode), so the id, `var lrcode` and the script tag must stay together and in that
+  order. It lists every club in the division. At the time of writing the code points at the
+  Manchester Football League *Premier Division*, which Baguley isn't in, so no Baguley fixtures show
+  until the admin regenerates it for the right division.
+- `F` — the old hand-maintained 24 fixtures, as `[day, month, time, H|A, venue, homeTeam, awayTeam]`.
+  **Kept but not published**: `manualFixturesMain` still renders it; swap it into `OUT` to switch back.
 - `KITS`, `KIT_BENEFITS`, `PACKS` — the sponsorship prices and perks, transcribed from the club's
   Commercial Brochure PDF (a copy lives at `assets/commercial-brochure.pdf`, linked for download from
   the commercial page). These are the client's real prices; check the PDF before changing a number.
@@ -56,15 +63,20 @@ duplicated inline in `index.html` and `story.html` *and* as `nav`/`footer` templ
 weakness; the proportionate fix, if it starts to hurt, is to move the two hand-written pages' unique
 markup into `build.js` too so the builder emits all five.
 
-Fixtures are emitted **grouped by month** — `monthGroups` folds `F` into `<section class="month">`
+The manual fixtures render **grouped by month** — `monthGroups` folds `F` into `<section class="month">`
 blocks headed by the month name, which is why the row itself only prints the day number and `Sat`.
 Because the month is in the heading, adding it back to the row is redundant.
 
-**`app.js` is loaded by every page** and does two small things: toggles `.is-scrolled` on the header
-(which collapses the topline and tightens the nav past 24px of scroll), and runs the fixtures filter
-(All / Home / Away, updating the count, the empty state, and hiding any month group left with no
-visible fixtures). Every animation is CSS-driven; the filter half no-ops cleanly on the other pages
-because its selectors match nothing there.
+**`app.js` is loaded by every page** and does three small things: toggles `.is-scrolled` on the header
+(which collapses the topline and tightens the nav past 24px of scroll); tidies the FA Full-Time feed
+when its table arrives; and runs the manual fixtures filter (All / Home / Away), which currently has
+nothing to act on. Each part no-ops cleanly on pages where its selectors match nothing.
+
+The Full-Time widget writes inline styles, some `!important`, which no stylesheet can override. So a
+`MutationObserver` on `.fa-feed` strips those attributes as the table lands and tags rows mentioning
+Baguley with `.is-ours`; `styles.css` then styles the bare table normally. The feed's row shapes are
+documented above the `.fa-feed` rules, and under 760px each row becomes a grid. The widget only
+loads from a real http(s) origin, not `file://`.
 
 ## Design constraints
 
@@ -89,35 +101,29 @@ Watch specificity around both: an element-level rule like `.quote p` will otherw
 always needs either a black roundel (`.badge`) or `filter: invert(1)` on a light ground. It is also too
 small to scale much past ~120px.
 
-## The hero orbit (`.stage` in `styles.css`)
+## Latest news (`.newsband` in `styles.css`)
 
-Four photos orbit the club crest in CSS 3D, with a goal net behind and a full-bleed dark stage. This
-is the page's one piece of ambient motion, and it should stay the only one — the crest used to flip on
-its own axis at the same time and the two competed at the exact point the eye needs to read. Two
-things are load-bearing and easy to break:
+Under the hero, a full-bleed black band holds the four newest stories: one lead card with an excerpt,
+and three compact rows. Every card is a plain link to its story. This replaced a CSS 3D orbit of photos
+round the crest. The rotation was unwanted, and the pictures needed to click through to their stories,
+so **the home page has no ambient animation now**. Don't reintroduce a carousel or auto-rotation here.
 
-- **Depth sorting, not `z-index`.** The four `.orb` cards and `.orbit-core` are siblings in one
-  `transform-style: preserve-3d` context on `.orbit`. That is what lets the front card pass *in front
-  of* the crest and the back cards *behind* it. Adding `z-index` to any of them, or reintroducing a
-  wrapper element that flattens the context, reverts it to flat paint order and the crest wins again.
-- **Per-card counter-rotation.** Each card animates `rotateY(A) translateZ(350px) rotateY(-A)` — the
-  first rotation walks it round the ring, the trailing one cancels the spin so photos face the viewer.
-  Without it, cards on the back half render mirrored, and two of the four photos carry readable text.
-  The radius is repeated in `.orb`, in `@keyframes orb0`–`orb3`, in the ≤760px overrides, in the
-  `prefers-reduced-motion` block and in the combined reduced-motion + ≤760px query. Changing it means
-  updating every one of them; miss the last and parked cards run off the edge of a phone screen.
+The stories live on the club's Wix site, and the cards link out to the live posts in a new tab. Wix
+gave them non-descriptive slugs (`copy-of-…`), so check each link against its headline on
+baguleyathletic.co.uk/news rather than trusting the slug. Headlines and the lead excerpt are
+taken from the posts themselves. When the design is rebuilt in Wix these become internal links, and
+the band should pull from the blog rather than being hand-maintained.
 
-The net is masked with a radial gradient so it fades out toward the edges; at full strength across the
-whole stage it reads as noise rather than depth. `prefers-reduced-motion` parks the cards on their
-static ring positions.
+The goal net (`.net`) survives from the orbit as texture behind the band. It is masked with a radial
+gradient so it fades toward the edges; at full strength it reads as noise rather than depth.
 
 ## Assets and deployment
 
-Hero images live in `assets/hero/` with lowercase, ASCII, hyphenated filenames. Vercel serves from a
-case-sensitive Linux filesystem, so the original Wix names (capitalised folder, `~mv2` suffixes) were
-normalised deliberately — keep new assets to the same convention. Two hero images are `.avif`, which is
-fine in current browsers but blank on older ones; add `<picture>` fallbacks if the client needs wide
-support.
+News images live in `assets/news/` (960px JPEGs resized from the Wix originals) and event photos in
+`assets/events/`, all with lowercase, ASCII, hyphenated filenames. `assets/hero/` held the old orbit photos
+and is no longer referenced. Vercel serves from a case-sensitive Linux filesystem, so the original Wix
+names (capitalised folder, `~mv2` suffixes) were normalised deliberately — keep new assets to the same
+convention.
 
 `reference/HomePage/` and `reference/Fixtures/` are saved copies of the live Wix pages, kept as the
 **source of truth for content** — real fixture data, the chairman's quote, contact details and partner

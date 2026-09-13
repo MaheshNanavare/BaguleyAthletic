@@ -1,6 +1,8 @@
 const fs = require('fs');
 
 // Source: baguleyathletic.co.uk — Men's First Team Fixtures (Manchester League, Division 1)
+// NOT CURRENTLY PUBLISHED. fixtures.html now embeds the league's live FA Full-Time feed
+// (see fixturesMain). F and manualFixturesMain are kept so the page can be switched back.
 const F = [
   ['29','AUG','14:00','H','Ericstan Park','Baguley Athletic','Springhead'],
   ['05','SEP','14:00','A','West Drive Football Centre','Tintwistle Athletic','Baguley Athletic'],
@@ -133,7 +135,7 @@ const nav = `
             <a href="fixtures.html">Vets Squad</a>
           </div>
         </div>
-        <a href="index.html#story">News</a>
+        <a href="index.html#news">News</a>
         <div class="nav-item">
           <a href="commercial.html">Commercial Hub</a>
           <div class="submenu">
@@ -152,7 +154,7 @@ const nav = `
         <div class="mobile-panel">
           <a href="story.html">The Club</a>
           <a href="fixtures.html">Teams</a>
-          <a href="index.html#story">News</a>
+          <a href="index.html#news">News</a>
           <a href="commercial.html">Commercial Hub</a>
           <a href="events.html">Events</a>
           <a href="index.html#contact">Contact Us</a>
@@ -222,7 +224,30 @@ ${footer}
 
 /* ---------------------------------------------------------------- fixtures */
 
+// Live feed: the embed code FA Full-Time generated for the club admin. The widget script
+// looks for the div by id (lrep + lrcode), so it must stay after the div, and the id and
+// lrcode must change together. The links inside the div are its no-script fallback.
+const FA_LRCODE = '573852128';
+const FA_DIVISION = 'https://fulltime.thefa.com/index.html?divisionseason=192323718';
+
 const fixturesMain = `    <section class="page-heading container">
+      <p class="section-mark">Manchester Football League</p>
+      <h1>First team<br><em>fixtures.</em></h1>
+      <p class="lede">Every date, every opponent, every chance to get behind the Badgers. Home games at Ericstan Park.</p>
+    </section>
+
+    <section class="fixtures-section container">
+      <div class="fa-feed">
+        <div id="lrep${FA_LRCODE}">Data loading&hellip; <a href="${FA_DIVISION}">click here for Premier Division</a><br><br><a href="https://www.thefa.com/FULL-TIME">FULL-TIME Home</a></div>
+      </div>
+      <p class="fa-source">Fixtures published live by the league through <a class="text-link" href="${FA_DIVISION}" target="_blank" rel="noopener">FA Full-Time</a>.</p>
+      <script>var lrcode = '${FA_LRCODE}'</script>
+      <script src="https://fulltime.thefa.com/client/api/cs1.js"></script>
+    </section>
+`;
+
+// Previous hand-maintained version, built from F. Unused while the live feed is on.
+const manualFixturesMain = `    <section class="page-heading container">
       <p class="section-mark">Manchester League, Division One</p>
       <h1>First team<br><em>fixtures.</em></h1>
       <p class="lede">Every date, every opponent, every chance to get behind the Badgers. Home games at Ericstan Park.</p>
@@ -381,7 +406,7 @@ ${eventCards}
 const OUT = [
   ['fixtures.html', page(
     "Men's First Team Fixtures | Baguley Athletic FC",
-    "Baguley Athletic FC men's first team fixtures — Manchester League Division One.",
+    "Baguley Athletic FC men's first team fixtures, live from the Manchester Football League on FA Full-Time.",
     fixturesMain)],
   ['commercial.html', page(
     'Commercial Hub | Baguley Athletic FC',
@@ -399,4 +424,4 @@ OUT.filter(([f]) => !only || f === only).forEach(([file, html]) => {
   fs.writeFileSync(file, html);
   console.log('wrote', file, html.length, 'bytes');
 });
-console.log(F.length, 'fixtures (', homeCount, 'home ) across', monthGroups.length, 'months,', KITS.length + PACKS.length, 'packages');
+console.log('fixtures: FA Full-Time feed', FA_LRCODE, '(manual F not published),', KITS.length + PACKS.length, 'packages');
