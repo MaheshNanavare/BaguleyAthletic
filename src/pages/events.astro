@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import { EVENTS } from '../data/events';
+---
+<BaseLayout
+  title="Events | Baguley Athletic FC"
+  description="Photos from Baguley Athletic FC events — sponsorship handovers, charity challenges and club life at Ericstan Park."
+>
+  <PageHeading
+    mark="Club life"
+    lede="Sponsorship handovers, charity challenges and life around Ericstan Park — a look at what being part of the club actually looks like."
+  >Moments from<br><em>the season.</em></PageHeading>
+
+  <section class="container event-grid">
+    {EVENTS.map(({ photo, caption }) => (
+      <figure class="event-card">
+        <img src={photo} alt={caption} loading="lazy">
+        <figcaption>{caption}</figcaption>
+      </figure>
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+
+// Two initials for the monogram badge that stands in for a photo, e.g. "David Platt" -> "DP"
+const initials = (name: string) =>
+  name.split(' ').filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase();
+
+const GROUPS = [
+  {
+    mark: 'Leadership team',
+    heading: 'Setting the<br><em>direction.</em>',
+    people: [
+      {
+        name: 'David Platt',
+        role: 'Club Chairman',
+        bio: 'David oversees the strategic direction of Baguley Athletic FC, spearheading the club’s ambitious long-term road map toward semi-professional status while ensuring the club maintains its deep-rooted identity.',
+      },
+      {
+        name: 'Paul Stewart',
+        role: 'Head of Football & Business Operations',
+        bio: 'Paul oversees both the sporting strategy and the commercial viability of the club, ensuring a seamless connection between on-pitch performance and off-pitch sustainability. By managing everything from coaching staff recruitment and player development pathways to sponsorship acquisition and day-to-day financial administration, this role builds the foundational infrastructure needed for the amateur club to thrive within the local community.',
+      },
+    ],
+  },
+  {
+    mark: 'Football operations & player pathway',
+    heading: 'Building the<br><em>squads.</em>',
+    people: [
+      {
+        name: 'Paul Greenwood',
+        role: 'Head of Player Recruitment',
+        bio: 'Leading the club’s talent identification and scouting network, the Head of Player Recruitment ensures a constant influx of high-calibre players capable of meeting our promotion targets. Paul oversees the strategic sourcing of players for all our Adult Squads, and the transition phase from youth football.',
+      },
+      {
+        name: 'Chelsea Hulme',
+        role: 'Player Liaison & Welfare',
+        bio: 'Serving as a vital bridge between the playing squads, coaching staff, and the leadership team/committee, Chelsea ensures that our athletes have the off-pitch support required to perform on it. They are the primary point of contact for squad logistics, player integration, and personal well-being.',
+      },
+      {
+        name: 'Sandra Masiliso',
+        role: 'Head of Female Football & Development',
+        bio: 'Driving the strategic growth of the women’s game at the club, Sandra oversees the technical direction, coaching recruitment, and player pathways for our entire female section.',
+      },
+      {
+        name: 'Kyle Hendley',
+        role: 'Head of Junior Football & Development',
+        bio: 'Acting as the executive bridge to our youth system, Kyle ensures that our massive youth ecosystem is fully aligned with the senior club’s long-term footballing philosophy and transition pipeline.',
+      },
+    ],
+  },
+  {
+    mark: 'Commercial, marketing & media operations',
+    heading: 'Growing the<br><em>club.</em>',
+    people: [
+      {
+        name: 'Chris Jones',
+        role: 'Head of Finance',
+        bio: 'Chris is responsible for the overall financial governance, fiscal compliance, and strategic budgetary control of Baguley Athletic FC. This role ensures the club operates on a fully sustainable, transparent, and audited financial model.',
+      },
+      {
+        name: 'John Ewbank',
+        role: 'Head of Commercial Operations',
+        bio: 'Serving as the primary bridge between the club and the local high street, the Commercial & Community Partnerships Manager drives local revenue and manages grassroots business relationships. John is responsible for localised sponsorships, pitch-side advertising boards, and programme ads.',
+      },
+      {
+        name: 'Jacob Allen',
+        role: 'Partnerships Strategy & Activation Manager',
+        bio: 'Focusing on high-value corporate investment and regional brand alignment, the Partnerships Strategy & Activation Manager secures and manages major club sponsorships. Jacob oversees the design of bespoke corporate packages, from front-of-shirt branding to digital media partnerships.',
+      },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Our People | Baguley Athletic FC"
+  description="The leadership, football operations and commercial team behind Baguley Athletic FC."
+>
+  <PageHeading
+    mark="Our people"
+    lede="Baguley Athletic is run by a volunteer leadership team and committee covering everything from football operations to commercial partnerships — the people building the club behind the scenes."
+  >Our people.<br><em>Meet the committee.</em></PageHeading>
+
+  {GROUPS.map((group, i) => (
+    <section class="people-group container">
+      <p class="section-mark">{group.mark}</p>
+      <h2 set:html={group.heading} />
+      <div class={i === 0 ? 'leadership-grid' : 'people-grid'}>
+        {group.people.map(({ name, role, bio }) => (
+          <article class={i === 0 ? 'leader' : 'person'}>
+            <div class="person-badge">{initials(name)}</div>
+            <h3>{name}</h3>
+            <p class="label">{role}</p>
+            <p>{bio}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</BaseLayout>

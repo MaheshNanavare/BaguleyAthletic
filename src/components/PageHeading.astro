@@ -1,0 +1,15 @@
+---
+// Inner-page opener: section mark, headline (the default slot, so it can carry the
+// <br><em> line-break hook) and a lede paragraph.
+interface Props {
+  mark: string;
+  lede: string;
+}
+
+const { mark, lede } = Astro.props;
+---
+<section class="page-heading container">
+  <p class="section-mark">{mark}</p>
+  <h1><slot /></h1>
+  <p class="lede">{lede}</p>
+</section>

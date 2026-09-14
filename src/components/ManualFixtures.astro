@@ -1,0 +1,82 @@
+---
+// The previous hand-maintained fixtures list, built from FIXTURES. Not currently used —
+// fixtures.astro shows the live FA Full-Time feed. Swap it in there to switch back.
+import { FIXTURES, MONTH_NAMES, type Fixture } from '../data/fixtures';
+
+// fixtures run in date order, so a month break is simply a change of the month field.
+// The month lives in the heading, which is why each row only prints the day and "Sat".
+const months = FIXTURES.reduce<{ month: string; rows: [Fixture, number][] }[]>((groups, fixture, i) => {
+  const last = groups[groups.length - 1];
+  if (!last || last.month !== fixture[1]) groups.push({ month: fixture[1], rows: [[fixture, i]] });
+  else last.rows.push([fixture, i]);
+  return groups;
+}, []);
+
+const homeCount = FIXTURES.filter((f) => f[3] === 'H').length;
+---
+<section class="fixtures-section container">
+  <div class="fixture-toolbar">
+    <div class="filters">
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="home">Home</button>
+      <button class="filter" data-filter="away">Away</button>
+    </div>
+    <span class="fixture-count" data-count-all={FIXTURES.length} data-count-home={homeCount} data-count-away={FIXTURES.length - homeCount}>{FIXTURES.length} fixtures</span>
+  </div>
+  <div class="fixture-list">
+    {months.map(({ month, rows }) => (
+      <section class="month">
+        <h2 class="month-head">{MONTH_NAMES[month]}</h2>
+        {rows.map(([[day, , time, side, venue, home, away], i]) => (
+          <article class:list={['fixture', { next: i === 0 }]} data-venue={side === 'H' ? 'home' : 'away'}>
+            <div class="fixture-date"><strong>{day}</strong><span>Sat</span></div>
+            <div class="fixture-teams">
+              <small class="league">Manchester League, Division One</small>
+              <h2>{home} <b>v</b> {away}</h2>
+              <span class="venue">
+                {side === 'H'
+                  ? <span class="tag tag-home">Home</span>
+                  : <span class="tag tag-away">Away</span>}{venue}
+              </span>
+            </div>
+            {i === 0 && <span class="next-label">Next match</span>}
+            <p class="fixture-kick">{time}</p>
+          </article>
+        ))}
+      </section>
+    ))}
+  </div>
+  <p class="no-results" hidden>No fixtures match that filter.</p>
+</section>
+
+<script>
+  // All / Home / Away filter
+  const filters = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const fixtures = document.querySelectorAll<HTMLElement>('.fixture');
+  const months = document.querySelectorAll<HTMLElement>('.month');
+  const count = document.querySelector('.fixture-count');
+  const empty = document.querySelector<HTMLElement>('.no-results');
+
+  filters.forEach((filter) => {
+    filter.addEventListener('click', () => {
+      const selected = filter.dataset.filter;
+
+      filters.forEach((item) => item.classList.toggle('active', item === filter));
+
+      let shown = 0;
+      fixtures.forEach((fixture) => {
+        const match = selected === 'all' || fixture.dataset.venue === selected;
+        fixture.hidden = !match;
+        if (match) shown += 1;
+      });
+
+      // a month heading with nothing left under it is just a stray label
+      months.forEach((month) => {
+        month.hidden = !month.querySelector('.fixture:not([hidden])');
+      });
+
+      if (count) count.textContent = `${shown} ${shown === 1 ? 'fixture' : 'fixtures'}`;
+      if (empty) empty.hidden = shown > 0;
+    });
+  });
+</script>

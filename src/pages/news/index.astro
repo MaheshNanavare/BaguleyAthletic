@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import { getNews, excerpt } from '../../data/news';
+
+const stories = await getNews();
+---
+<BaseLayout
+  title="News | Baguley Athletic FC"
+  description="News from Baguley Athletic FC — partnerships, new teams and community events in Wythenshawe."
+>
+  <PageHeading
+    mark="Club news"
+    lede="Partnerships, new teams and community days — what's been happening at the Badgers, on the pitch and off it."
+  >News from<br><em>the Badgers.</em></PageHeading>
+
+  <section class="container news-index">
+    {stories.map((story) => (
+      <a class="news-row" href={`/news/${story.id}`}>
+        <img src={story.data.image} alt={story.data.imageAlt} loading="lazy">
+        <div>
+          <h2>{story.data.title}</h2>
+          <p>{excerpt(story)}</p>
+          <span class="news-more">Read the story</span>
+        </div>
+      </a>
+    ))}
+  </section>
+</BaseLayout>

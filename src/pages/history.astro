@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+
+const ERAS = [
+  {
+    years: '2004–07',
+    heading: 'The early<br><em>spark.</em>',
+    copy: [
+      'The story of Baguley Athletic began in 2004. Born as a breakaway from Woodhouse Park United, the club launched with a single, highly passionate under-14 side. The early years brought immediate and rapid success on the pitch, highlighted by back-to-back promotions and league titles.',
+      'However, by 2007, the initial chapter drew to a close as the club went on a temporary hiatus.',
+    ],
+    gapAfter: 'Six years off the pitch, until a new committee brought the club back.',
+  },
+  {
+    years: '2013–19',
+    heading: 'Rebirth and<br><em>expansion.</em>',
+    copy: [
+      'In 2013, Baguley Athletic was officially reborn, returning to the grid as an adult Saturday Morning Team. Under the guidance of Paul Stewart, the new era kicked off in spectacular fashion with a resounding 7&ndash;1 debut victory.',
+      'The momentum was unstoppable; the club rapidly expanded by adding Sunday and Veterans teams, securing vital local sponsorship, and hosting community charity matches. Between 2014 and 2019, the club truly flourished &mdash; multiple promotions across all senior sides, FA Charter Standard Status in 2018, a full club re-brand to the modern black, white and yellow identity, and the return of our junior football pipeline.',
+    ],
+  },
+  {
+    years: '2020–24',
+    heading: 'Resilience and<br><em>ascendancy.</em>',
+    copy: [
+      'Despite a brief, league-wide pause in 2020, Baguley bounced back stronger than ever. A new First Team was formed in 2021, competing in the Lancashire &amp; Cheshire League before quickly stepping up to the Manchester League. A dedicated reserve team and further junior squads quickly followed.',
+      'By 2023, the club established a thriving junior hub boasting ten brand-new teams. That exact same year, both the First Team and the Reserves earned hard-fought, simultaneous league promotions, with the Firsts gaining a successive promotion to the prestigious Manchester League Premier Division.',
+    ],
+  },
+  {
+    years: '2025–',
+    heading: 'The<br><em>modern era.</em>',
+    copy: [
+      'The summer of 2025 marked a massive infrastructure milestone for the club. Baguley Athletic secured an exciting new ground-share partnership with Wythenshawe Town, proudly calling the excellent, semi-professional facilities at Ericstan Park home for the 25/26 season.',
+      'Today, backed by Club Chairman David Platt and a modernised executive committee, Baguley Athletic stands as a proud FA Charter Standard Club. With a robust structure featuring our Manchester League First Team, a dedicated Development Squad, a pathway into Veterans football, an exciting Under 18s squad, and a brand-new women’s team, we are actively writing the most ambitious chapter in our history yet.',
+    ],
+  },
+];
+
+const HONOURS = [
+  { title: 'Stockport Metro Junior League Winners', years: '2004, 2005' },
+  { title: 'Manchester Saturday Morning League D2 Winners', years: '2016' },
+  { title: 'Cheshire Vets League D5 Winners', years: '2019' },
+  { title: 'Stockport & District League D3 Winners', years: '2023' },
+];
+---
+<BaseLayout
+  title="History | Baguley Athletic FC"
+  description="From a single youth squad in 2004 to a fast-growing multi-team club in the Manchester League — the history of Baguley Athletic FC and our honours."
+>
+  <PageHeading
+    mark="Our history"
+    lede="From a single youth squad to a fast-growing multi-team ecosystem, Baguley Athletic Football Club — #TheBadgers — has spent over two decades building a legacy of resilience, community pride, and footballing excellence. This is our track record of success and the journey that brought us to the Manchester League."
+  >Our history.<br><em>The story of the Badgers.</em></PageHeading>
+
+  <div class="history-timeline container">
+    {ERAS.map((era) => (
+      <>
+        <article class="timeline-item">
+          <p class="timeline-years">{era.years}</p>
+          <div class="timeline-content">
+            <h2 set:html={era.heading} />
+            <div class="intro-copy">
+              {era.copy.map((paragraph) => (
+                <p set:html={paragraph} />
+              ))}
+            </div>
+          </div>
+        </article>
+        {era.gapAfter && (
+          <div class="timeline-gap">
+            <p>{era.gapAfter}</p>
+          </div>
+        )}
+      </>
+    ))}
+  </div>
+
+  <section class="honours-band">
+    <div class="container">
+      <p class="section-mark">Trophy cabinet</p>
+      <h2>Our<br><em>honours.</em></h2>
+      <ul class="honours-list">
+        {HONOURS.map(({ title, years }) => (
+          <li><span>{title}</span><strong>{years}</strong></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

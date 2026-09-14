@@ -1,0 +1,19 @@
+---
+import { FA_LRCODE, FA_DIVISION } from '../data/fixtures';
+
+// The widget script finds its container by id (lrep + lrcode) and reads a global
+// `lrcode`, so both scripts stay is:inline (unbundled, in this order, after the div).
+// The links inside the div are its no-script fallback.
+---
+<section class="fixtures-section container">
+  <div class="fa-feed">
+    <div id={`lrep${FA_LRCODE}`}>Data loading&hellip; <a href={FA_DIVISION}>click here for Premier Division</a><br><br><a href="https://www.thefa.com/FULL-TIME">FULL-TIME Home</a></div>
+  </div>
+  <p class="fa-source">Fixtures published live by the league through <a class="text-link" href={FA_DIVISION} target="_blank" rel="noopener">FA Full-Time</a>.</p>
+  <script is:inline set:html={`var lrcode = '${FA_LRCODE}'`}></script>
+  <script is:inline src="https://fulltime.thefa.com/client/api/cs1.js"></script>
+</section>
+
+<script>
+  import '../scripts/fa-feed.js';
+</script>

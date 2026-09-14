@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ChairmanQuote from '../components/ChairmanQuote.astro';
+import NewsBand from '../components/NewsBand.astro';
+import { getNews } from '../data/news';
+
+const latest = (await getNews()).slice(0, 4);
+---
+<BaseLayout
+  title="Baguley Athletic FC | Home of The Badgers"
+  description="Baguley Athletic FC — home of The Badgers. Grassroots football in Wythenshawe, Manchester."
+>
+  <section class="hero container">
+    <h1>Made in<br><em>Wythenshawe.</em></h1>
+    <div class="hero-side">
+      <p class="hero-intro">A progressive, community-driven club building a sustainable sporting institution. Affectionately known as <strong>The Badgers</strong>.</p>
+      <div class="hero-actions">
+        <a class="button button-dark" href="/fixtures">See the fixtures</a>
+        <a class="text-link" href="#story">Our story</a>
+      </div>
+    </div>
+  </section>
+
+  <NewsBand id="news" heading="Latest news" stories={latest} />
+
+  <section class="intro container" id="story">
+    <p class="section-mark">Our story</p>
+    <h2>A club that<br>respects its roots.<br><em>And refuses<br>to stand still.</em></h2>
+    <div class="intro-copy">
+      <p>Guided by Club Chairman and former England international David Platt, we're combining professional governance with an elite-level focus to climb the non-league pyramid.</p>
+      <p>From a complete football pathway to local community wealth building, everything we do is built around people, pride and the place we call home.</p>
+      <a class="text-link" href="#contact">Become a Badger</a>
+    </div>
+  </section>
+
+  <section class="board-wrap container">
+    <p class="section-mark">Next match</p>
+    <div class="scoreboard">
+      <div class="sb-top">
+        <div class="sb-team">
+          <span class="badge sb-badge"><img src="/assets/badge-white-hd.png" alt=""></span>
+          <span class="sb-name">Baguley<br>Athletic</span>
+        </div>
+        <div class="sb-c">
+          <span class="sb-kick">14:00</span>
+          <span class="sb-day">Saturday 29 August</span>
+        </div>
+        <div class="sb-team sb-right">
+          <span class="sb-name">Springhead</span>
+          <span class="badge sb-badge sb-badge-away" aria-hidden="true">S</span>
+        </div>
+      </div>
+      <p class="sb-meta">
+        <span><b>Ericstan Park</b>, Timpson Road, Wythenshawe</span>
+        <span>Manchester League, Division One</span>
+      </p>
+    </div>
+    <div class="board-actions">
+      <a class="button button-light" href="/fixtures">All fixtures</a>
+      <a class="text-link" href="#contact">Ground address</a>
+    </div>
+  </section>
+
+  <section class="feature-grid container">
+    <article class="feature feature-dark">
+      <p class="label">The pathway</p>
+      <h3>One club.<br><em>Every level.</em></h3>
+      <ul class="squad-list">
+        <li>Men's First Team <span>Manchester League, Division One</span></li>
+        <li>Development Squad <span>Under 21s</span></li>
+        <li>Ladies First Team</li>
+        <li>Under 18s</li>
+        <li>Vets Squad</li>
+      </ul>
+      <a class="button button-onblack" href="#contact">Join a squad</a>
+    </article>
+    <figure class="photo-card">
+      <img src="/assets/events/kit-handover.jpg" alt="The new home shirt, carrying the BW3 logo, handed over pitch-side at Ericstan Park.">
+      <figcaption>
+        <h3>Built by<br><em>Wythenshawe.</em></h3>
+        <p>Front of shirt on both kits is gifted to local causes &mdash; BW3 on the home shirt, Woodhouse Park Family Centre on the away.</p>
+        <a class="text-link" href="/story">Our story</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <ChairmanQuote quote="We are striving for progression and success.">
+    <p>I'm delighted to become Chairman of Baguley Athletic FC, a club I've come to know well over the last two seasons. The ambition of our volunteers is highly motivating, and while my background is there for the players and management to draw upon, it's our off-field vision that will truly help us prosper.</p>
+    <p>We'll achieve that by building an inclusive club, establishing a unified identity, and deeply supporting our local community.</p>
+  </ChairmanQuote>
+
+  <section class="partners container" id="partners">
+    <p class="section-mark">Our partners</p>
+    <p class="partners-lede">Front of shirt on both kits is gifted to local causes. Everything else is <a class="text-link" href="/commercial">open for sponsorship</a>.</p>
+    <div class="partner-row">
+      <img src="/assets/partner-woodhouse.png" alt="Woodhouse Park Family Centre">
+      <img src="/assets/partner-yeep.png" alt="Yeep!">
+      <img src="/assets/partner-3.png" alt="BW3 — Business Working With Wythenshawe">
+      <img src="/assets/partner-4.jpeg" alt="Golazzo Group">
+    </div>
+  </section>
+</BaseLayout>

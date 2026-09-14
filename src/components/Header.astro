@@ -1,0 +1,71 @@
+<header class="site-header">
+  <div class="topline">
+    <div class="container topbar">
+      <span>Ericstan Park, Wythenshawe, Manchester</span>
+      <a href="mailto:club@baguleyathletic.co.uk">club@baguleyathletic.co.uk</a>
+    </div>
+  </div>
+  <div class="container nav-wrap">
+    <a class="brand" href="/" aria-label="Baguley Athletic FC — home">
+      <span class="badge"><img src="/assets/badge-white-hd.png" alt=""></span>
+      <span><b>Baguley Athletic</b><small>Football Club</small></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <div class="nav-item">
+        <a href="/story">The Club</a>
+        <div class="submenu">
+          <a href="/story">Our Story</a>
+          <a href="/people">Our People</a>
+          <a href="/history">History</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="/fixtures">Teams</a>
+        <div class="submenu">
+          <a href="/fixtures">Men's 1st Team</a>
+          <a href="/fixtures">Development Squad</a>
+          <a href="/fixtures">Ladies 1st Team</a>
+          <a href="/fixtures">Under 18s</a>
+          <a href="/fixtures">Vets Squad</a>
+        </div>
+      </div>
+      <a href="/news">News</a>
+      <div class="nav-item">
+        <a href="/commercial">Commercial Hub</a>
+        <div class="submenu">
+          <a href="/commercial#kit">Kit Sponsorship</a>
+          <a href="/commercial#packages">Packages &amp; Perks</a>
+          <a href="/commercial#advertising">Pitch &amp; Stadium</a>
+          <a href="/#partners">Our Partners</a>
+          <a href="/commercial#brochure">Commercial Brochure</a>
+        </div>
+      </div>
+      <a href="/events">Events</a>
+      <a href="/#contact">Contact Us</a>
+    </nav>
+    <details class="mobile-nav">
+      <summary aria-label="Open menu"><i></i><i></i><i></i></summary>
+      <div class="mobile-panel">
+        <a href="/story">The Club</a>
+        <a href="/fixtures">Teams</a>
+        <a href="/news">News</a>
+        <a href="/commercial">Commercial Hub</a>
+        <a href="/events">Events</a>
+        <a href="/#contact">Contact Us</a>
+        <a href="/fixtures">Fixtures</a>
+      </div>
+    </details>
+    <a class="button button-dark nav-cta" href="/fixtures">Fixtures</a>
+  </div>
+</header>
+
+<script>
+  // compact the header once the page moves (collapses the topline, tightens the nav)
+  const header = document.querySelector('.site-header');
+
+  if (header) {
+    const setHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+    setHeaderState();
+    window.addEventListener('scroll', setHeaderState, { passive: true });
+  }
+</script>

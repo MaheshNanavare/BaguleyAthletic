@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+---
+<BaseLayout
+  title="Page not found | Baguley Athletic FC"
+  description="That page isn't here. Head back to Baguley Athletic FC, home of The Badgers."
+>
+  <PageHeading
+    mark="Page not found"
+    lede="That page has moved or never existed. Try the fixtures, or start again from the home page."
+  >Off the<br><em>pitch.</em></PageHeading>
+
+  <section class="container">
+    <a class="button button-dark" href="/">Back to home</a>
+  </section>
+</BaseLayout>

@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects. Old Wix news URLs → the same stories on this site, so links
+# already shared on social media keep working after the domain moves. Wix gave the posts
+# non-descriptive "copy-of-…" slugs, so these map by headline, not by slug.
+/new-partnership-announced               /news/new-partnership-announced          301
+/copy-of-new-partnership-announced       /news/new-womens-team                    301
+/copy-of-the-badger-s-welcome-new-wome   /news/ground-share-partnership-extended  301
+/copy-of-ground-share-partnership-exte   /news/charity-event-victory              301

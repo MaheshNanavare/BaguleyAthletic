@@ -1,0 +1,49 @@
+---
+// The black news band: one lead card with an excerpt, then compact rows. Used for
+// "Latest news" on the home page and "More news" under each story.
+import { excerpt, type Story } from '../data/news';
+
+interface Props {
+  id: string;
+  heading: string;
+  stories: Story[];
+}
+
+const { id, heading, stories } = Astro.props;
+const [lead, ...rest] = stories;
+
+// the lead headline breaks before its last word, which rides the <em> line-break hook
+const words = lead.data.title.split(' ');
+const last = words.pop()!;
+const leadEnd = /[.!?]$/.test(last) ? last : `${last}.`;
+---
+<section class="newsband" id={id} aria-labelledby={`${id}-title`}>
+  <div class="net" aria-hidden="true"></div>
+  <div class="container news-inner">
+    <div class="news-head">
+      <p class="section-mark" id={`${id}-title`}>{heading}</p>
+      <a class="text-link" href="/news">All news</a>
+    </div>
+    <div class="news-grid">
+      <a class="news-lead" href={`/news/${lead.id}`}>
+        <img src={lead.data.image} alt={lead.data.imageAlt}>
+        <h3>{words.join(' ')}<br><em>{leadEnd}</em></h3>
+        <p>{excerpt(lead)}</p>
+        <span class="news-more">Read the story</span>
+      </a>
+      {rest.length > 0 && (
+        <div class="news-list">
+          {rest.map((story) => (
+            <a class="news-item" href={`/news/${story.id}`}>
+              <img src={story.data.image} alt={story.data.imageAlt} loading="lazy">
+              <div>
+                <h3>{story.data.title}</h3>
+                <span class="news-more">Read the story</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import ChairmanQuote from '../components/ChairmanQuote.astro';
+---
+<BaseLayout
+  title="Our Story | Baguley Athletic FC"
+  description="Our story, our vision and the road to Step Six — how Baguley Athletic FC is building a sustainable sporting institution in Wythenshawe."
+>
+  <PageHeading
+    mark="Who we are"
+    lede="Baguley Athletic Football Club — affectionately known as The Badgers — is a progressive, community-driven club proud to represent our local area, built on hard work, professional governance and a deep connection to the community we serve."
+  >Our story.<br><em>Our vision.</em></PageHeading>
+
+  <section class="container video-grid" aria-label="Home kit and club crest">
+    <figure class="video-card">
+      <video src="/assets/videos/kit-rotation.mp4" autoplay muted loop playsinline></video>
+      <figcaption>The home kit</figcaption>
+    </figure>
+    <figure class="video-card">
+      <video src="/assets/videos/logo-rotation.mp4" autoplay muted loop playsinline></video>
+      <figcaption>The crest</figcaption>
+    </figure>
+  </section>
+
+  <section class="intro container">
+    <p class="section-mark">A new chapter</p>
+    <h2>Every great club<br><em>has a turning point.</em></h2>
+    <div class="intro-copy">
+      <p>We aren't just building a football team; we are building a sustainable sporting institution. Driven by an ambitious three-person leadership team alongside Club Chairman and former England international David Platt, Baguley Athletic is transitioning into a modern, forward-thinking club with a clear elite-level focus.</p>
+      <p>Following a comprehensive restructuring of our leadership and football operations, we have modernised the entire infrastructure &mdash; from financial oversight and commercial strategy to match-day operations &mdash; and laid down professional foundations designed to withstand competitive non-league football.</p>
+      <p>We are a club that respects its roots but refuses to stand still. Every training session, every administrative decision and every match-day is executed with a higher standard in mind.</p>
+    </div>
+  </section>
+
+  <section class="intro container" id="vision">
+    <p class="section-mark">The road to Step Six</p>
+    <h2>Building a club<br><em>that can compete.</em></h2>
+    <div class="intro-copy">
+      <p>Our ambition is clear and unapologetic: we are building a club capable of competing at a semi-professional level. We judge our success not just by the trophies in the cabinet, but by the sustainable pathways we create for players, coaches and our community.</p>
+      <p>The strategic road-map rests on three pillars.</p>
+    </div>
+  </section>
+
+  <section class="container feature-grid feature-grid-3">
+    <article class="feature feature-light">
+      <p class="label">Elite development</p>
+      <h3>Recruit on<br><em>merit.</em></h3>
+      <p>Performance-based recruitment and objective player assessment. Rigorous scouting and grading make sure every player who wears the badge has what it takes to win promotions.</p>
+    </article>
+    <article class="feature feature-light">
+      <p class="label">A complete pathway</p>
+      <h3>Leave<br><em>no one behind.</em></h3>
+      <p>The First Team climbing the pyramid. The Development Squad nurturing elite under-21 talent. A competitive, fully integrated Women and Girls setup.</p>
+    </article>
+    <article class="feature feature-light">
+      <p class="label">Community wealth building</p>
+      <h3>Grow the<br><em>whole area.</em></h3>
+      <p>Through our community membership scheme, The Sett, we bridge grassroots football and local independent businesses &mdash; so as the club succeeds, our community succeeds with us.</p>
+    </article>
+  </section>
+
+  <ChairmanQuote quote="Baguley Athletic is on the rise.">
+    <p>We are laying foundations that will secure the future of this club for generations to come. Baguley Athletic is on the rise &mdash; on the pitch, in the community, and commercially. We invite you to be a part of the journey.</p>
+  </ChairmanQuote>
+
+  <section class="intro container">
+    <p class="section-mark">Join the journey</p>
+    <h2>There's a place<br><em>for you in our story.</em></h2>
+    <div class="intro-copy">
+      <p>Whether you are a player looking to test yourself in an elite environment, a local business wanting to partner with a growing brand, or a supporter ready to back the Badgers from the sidelines &mdash; there is a place for you here.</p>
+      <a class="button button-dark" href="/#contact">Get in touch</a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+// The chairman's pull-quote; the default slot holds the paragraphs under the blockquote.
+interface Props {
+  quote: string;
+}
+
+const { quote } = Astro.props;
+---
+<section class="container">
+  <div class="quote">
+    <span class="badge"><img src="/assets/badge-white-hd.png" alt=""></span>
+    <div>
+      <p class="label">Chairman's welcome</p>
+      <blockquote>&ldquo;{quote}&rdquo;</blockquote>
+      <slot />
+      <cite>David Platt<span>Club Chairman</span></cite>
+    </div>
+  </div>
+</section>

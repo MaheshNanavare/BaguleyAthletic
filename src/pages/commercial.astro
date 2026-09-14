@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import { KITS, KIT_BENEFITS, PACKS } from '../data/commercial';
+---
+<BaseLayout
+  title="Commercial Hub | Baguley Athletic FC"
+  description="Sponsorship, matchday packages and pitch-side advertising with Baguley Athletic FC, Wythenshawe."
+>
+  <PageHeading
+    mark="Commercial hub"
+    lede="Grassroots sponsorship is usually a begging ask. We would rather it ran both ways — visibility, connection and real value for money."
+  >Partner with<br><em>the Badgers.</em></PageHeading>
+
+  <section class="stat-band">
+    <div class="container stat-row">
+      <div><strong>60,000</strong><span>cars past the ground each week</span></div>
+      <div><strong>3</strong><span>clubs playing at Ericstan Park</span></div>
+      <div><strong>2004</strong><span>the year we were founded</span></div>
+      <div><strong>5</strong><span>squads, from Under 18s to Vets</span></div>
+    </div>
+  </section>
+
+  <section class="container commercial-intro">
+    <div class="intro-grid">
+      <p class="section-mark">Why partner with us</p>
+      <h2>Identity and<br><em>presence.</em></h2>
+      <div>
+        <p>Since joining we have gained real momentum, on the pitch and off it. In large part that has come from focusing on two core principles &mdash; identity and presence &mdash; and the two go hand in hand.</p>
+        <p>Identity means smart new kits and new training and travel apparel, so that players, volunteers and prospective commercial partners can feel proud of what we stand for and how we look. Presence means being involved, deeply, in the local community.</p>
+        <p>We have gifted front of shirt sponsorship to two charities. The home kit carries the logo of <strong>BW3</strong>, funded by businesses to invest in local schoolchildren. The away shirt carries <strong>Woodhouse Park Family Centre</strong>, a not-for-profit free childcare programme for families that need it.</p>
+        <cite>David Platt<span>Club Chairman</span></cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="container packages" id="kit">
+    <p class="section-mark">Kit sponsorship</p>
+    <h2 class="section-title">Front of shirt.</h2>
+    <div class="tier-grid">
+      {KITS.map(({ name, price, term, blurb, photo, bg, featured }) => (
+        <article class:list={['tier', { 'tier-featured': featured }]}>
+          <div class="tier-photo" style={`background:${bg}`}><img src={photo} alt={`${name.replace('&', 'and')} product photo`} loading="lazy"></div>
+          <div class="tier-body">
+            <h3>{name}</h3>
+            <p class="tier-price"><span>&pound;</span>{price}</p>
+            <p class="tier-term">{term}</p>
+            <p class="tier-blurb">{blurb}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="benefits">
+      <p class="benefits-head">Every kit package includes</p>
+      <ul>
+        {KIT_BENEFITS.map((benefit) => <li>{benefit}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container packages" id="packages">
+    <p class="section-mark">Packages and perks</p>
+    <h2 class="section-title">Other ways in.</h2>
+    <div class="pack-grid">
+      {PACKS.map(({ name, price, term, perks, note }) => (
+        <article class="pack">
+          <h3>{name}</h3>
+          <ul>
+            {perks.map((perk) => <li>{perk}</li>)}
+          </ul>
+          <p class="pack-price"><span>&pound;</span>{price}</p>
+          <p class="pack-term">{term}</p>
+          {note && <p class="pack-note">{note}</p>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="container packages" id="advertising">
+    <p class="section-mark">Pitch and stadium advertising</p>
+    <h2 class="section-title">Seen all week.</h2>
+    <div class="advert-grid">
+      <article class="advert">
+        <h3>On matchdays</h3>
+        <p>Your pitch-side board reaches a wide, diverse demographic of thousands of visitors. Because our ground proudly hosts Baguley Athletic, Wythenshawe Town and Wythenshawe Town Laces (formerly Manchester Laces), your brand gets triple the exposure &mdash; welcoming football communities from across the region every weekend.</p>
+      </article>
+      <article class="advert">
+        <h3>Throughout the week</h3>
+        <p>The visibility doesn't stop when the final whistle blows. Our external stadium boards face directly onto Altrincham Road (A556), a major local traffic artery. With an estimated 60,000 cars passing the ground every week, your business gains constant, repetitive exposure to daily commuters.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="commercial-cta" id="brochure">
+    <div class="container cta-inner">
+      <div>
+        <p class="label">Talk to us</p>
+        <h2>Let's shape a<br><em>package together.</em></h2>
+        <p class="cta-copy">The packages here are our opening ideas. We would be very open to learning what you need as a business, and how we can shape them to give you that.</p>
+      </div>
+      <div class="cta-side">
+        <p class="cta-label">Head of Commercial Operations</p>
+        <p class="cta-name">John Ewbank</p>
+        <a class="cta-mail" href="mailto:jewbank@baguleyathletic.co.uk">jewbank@baguleyathletic.co.uk</a>
+        <a class="button button-onblack" href="/assets/commercial-brochure.pdf" target="_blank" rel="noopener">Download the brochure <span aria-hidden="true">&darr;</span></a>
+        <p class="cta-note">PDF, 8 pages</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
