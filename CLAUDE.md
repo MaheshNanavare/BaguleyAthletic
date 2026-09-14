@@ -74,8 +74,11 @@ nothing to act on. Each part no-ops cleanly on pages where its selectors match n
 
 The Full-Time widget writes inline styles, some `!important`, which no stylesheet can override. So a
 `MutationObserver` on `.fa-feed` strips those attributes as the table lands and tags rows mentioning
-Baguley with `.is-ours`; `styles.css` then styles the bare table normally. The feed's row shapes are
-documented above the `.fa-feed` rules, and under 760px each row becomes a grid. The widget only
+Baguley with `.is-ours`. It then reads the table back into a **matchday sheet** (`.matchdays`, a sibling
+of `.fa-feed` so writing it can't re-trigger the observer): one row per date with a large day number
+pinned in the left rail, games grouped under kick-off times, Baguley games as black bands tagged
+Home/Away. If nothing parses, the sheet stays hidden and the tidied table shows with its own styling
+as the fallback. The feed's row shapes are documented above the `.fa-feed` rules. The widget only
 loads from a real http(s) origin, not `file://`.
 
 ## Design constraints
