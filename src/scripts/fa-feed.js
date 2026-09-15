@@ -51,12 +51,19 @@ const readFeed = () => {
         entry.slots.push(slot);
       }
     } else if (cells.length >= 4 && slot) {
+      // Comp and home are always cells[0]/[1]; venue is always the last cell and away the
+      // one before it. Between home and away sits either just a separator ("v"/"-", 5 cells
+      // total) or a separator flanked by two score cells (7 cells, once a result is in) —
+      // reading from the end keeps both shapes working instead of assuming a fixed index.
       const link = row.querySelector('a');
+      const hasScore = cells.length >= 7;
       slot.games.push({
         comp: cellText(cells[0]),
         home: cellText(cells[1]),
-        away: cellText(cells[3]),
-        venue: venueCase(cellText(cells[4])),
+        homeScore: hasScore ? cellText(cells[2]) : '',
+        away: cellText(cells[cells.length - 2]),
+        awayScore: hasScore ? cellText(cells[cells.length - 3]) : '',
+        venue: venueCase(cellText(cells[cells.length - 1])),
         href: link ? link.href : '',
       });
     }
@@ -72,14 +79,18 @@ const gameMarkup = (game) => {
   const side = ours
     ? `<span class="md-side md-side-${homeOurs ? 'home' : 'away'}">${homeOurs ? 'Home' : 'Away'}</span>`
     : '';
+  const played = game.homeScore !== '' && game.awayScore !== '';
+  const middle = played
+    ? `<span class="md-score">${esc(game.homeScore)}&ndash;${esc(game.awayScore)}</span>`
+    : `<span class="md-v">v</span>`;
   const tag = game.href ? 'a' : 'div';
   const href = game.href ? ` href="${esc(game.href)}" target="_blank" rel="noopener"` : '';
   return `
     <li>
-      <${tag} class="md-game${ours ? ' is-ours' : ''}"${href}>
+      <${tag} class="md-game${ours ? ' is-ours' : ''}${played ? ' is-played' : ''}"${href}>
         <span class="md-teams">
           <span class="md-home">${esc(game.home)}</span>
-          <span class="md-v">v</span>
+          ${middle}
           <span class="md-away">${esc(game.away)}</span>
         </span>
         <span class="md-meta">

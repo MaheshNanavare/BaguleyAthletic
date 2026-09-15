@@ -77,17 +77,20 @@ Write plain characters in data (`&`, `—`); Astro escapes output, so HTML entit
 (`lrep` + lrcode) and reads a *global* `lrcode`, so in `FaFeed.astro` the div, the `var lrcode`
 script and the `cs1.js` script must stay together, in that order, and both scripts must stay
 `is:inline` (bundling or `define:vars` would scope the variable and break it). The widget lists every
-club in the division. At the time of writing the code points at the Manchester Football League
-*Premier Division*, which Baguley isn't in, so no Baguley fixtures show until the admin regenerates it
-for the right division. The widget only loads from a real http(s) origin.
+club in the division. The code points at the club's *Division One* season, so Baguley's own fixtures
+show; regenerate it each new season, since the FA rolls the season id over. The widget only loads
+from a real http(s) origin.
 
 The widget writes inline styles, some `!important`, which no stylesheet can override. So a
 `MutationObserver` on `.fa-feed` strips those attributes as the table lands and tags rows mentioning
 Baguley with `.is-ours`. It then reads the table back into a **matchday sheet** (`.matchdays`, a
 sibling of `.fa-feed` so writing it can't re-trigger the observer): one row per date with a large day
 number pinned in the left rail, games grouped under kick-off times, Baguley games as black bands
-tagged Home/Away. If nothing parses, the sheet stays hidden and the tidied table shows with its own
-styling as the fallback. The feed's row shapes are documented above the `.fa-feed` rules in the CSS.
+tagged Home/Away. A played fixture's row has two extra score cells either side of the separator; once
+both are non-empty `fa-feed.js` reads them into `.md-score` in place of the plain "v", so results show
+automatically as the league enters them, with no separate results page or feed to maintain. If nothing
+parses, the sheet stays hidden and the tidied table shows with its own styling as the fallback. The
+feed's row shapes are documented above the `.fa-feed` rules in the CSS.
 
 `ManualFixtures.astro` still renders the old `FIXTURES` list (grouped by month, with an All / Home /
 Away filter) but isn't used. To switch back, render it in place of `<FaFeed />` in

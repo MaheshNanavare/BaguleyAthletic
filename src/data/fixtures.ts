@@ -1,9 +1,8 @@
 // Live feed: the embed code FA Full-Time generated for the club admin. The widget script
 // looks for its container by id (lrep + lrcode), so the id and lrcode must change together.
-// At the time of writing this points at the Manchester Football League Premier Division,
-// which Baguley isn't in, so no Baguley fixtures show until the admin regenerates it.
-export const FA_LRCODE = '573852128';
-export const FA_DIVISION = 'https://fulltime.thefa.com/index.html?divisionseason=192323718';
+// This is the club's own Division One code (the earlier lrcode was a placeholder demo).
+export const FA_LRCODE = '720274018';
+export const FA_DIVISION = 'https://fulltime.thefa.com/index.html?divisionseason=981630320';
 
 // Source: baguleyathletic.co.uk — Men's First Team Fixtures (Manchester League, Division 1)
 // NOT CURRENTLY PUBLISHED. fixtures.astro renders the live FA Full-Time feed instead;
