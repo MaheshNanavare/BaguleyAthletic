@@ -1,0 +1,24 @@
+---
+import { TEAMS } from '../data/fixtures';
+
+// The home page scoreboard: the first team's next game, read from the same FA Full-Time
+// feed as /fixtures by scripts/next-match.js, which loads the widget into the hidden
+// div after the page is up. There's no hand-typed fixture to go stale; until the feed
+// answers the board holds a short note.
+const first = TEAMS[0];
+---
+<section class="board-wrap container">
+  <p class="section-mark">Next match</p>
+  <div class="scoreboard" data-lrcode={first.lrcode} data-division={`Manchester League, ${first.divisionName}`} aria-live="polite">
+    <p class="sb-wait">Loading the next fixture from the league&hellip;</p>
+  </div>
+  <div id={`lrep${first.lrcode}`} hidden></div>
+  <div class="board-actions">
+    <a class="button button-light" href="/fixtures">All fixtures &amp; results</a>
+    <a class="text-link" href="#contact">Ground address</a>
+  </div>
+</section>
+
+<script>
+  import '../scripts/next-match.js';
+</script>

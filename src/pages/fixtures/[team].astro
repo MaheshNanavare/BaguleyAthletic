@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import FaFeed from '../../components/FaFeed.astro';
+import { TEAMS, type Team } from '../../data/fixtures';
+
+// One page per team other than the first team (which is /fixtures itself).
+export function getStaticPaths() {
+  return TEAMS.filter((team) => team.slug).map((team) => ({ params: { team: team.slug }, props: { team } }));
+}
+
+const { team } = Astro.props as { team: Team };
+---
+<BaseLayout
+  title={`${team.name} Fixtures & Results | Baguley Athletic FC`}
+  description={`Baguley Athletic FC ${team.name} fixtures and results, live from ${team.divisionName} on FA Full-Time.`}
+>
+  <PageHeading
+    mark={team.divisionName}
+    lede="Every date, every opponent, every chance to get behind the Badgers."
+  >{team.heading}<br><em>fixtures &amp; results.</em></PageHeading>
+
+  <FaFeed team={team} />
+</BaseLayout>

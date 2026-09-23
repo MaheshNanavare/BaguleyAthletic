@@ -2,17 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeading from '../components/PageHeading.astro';
 import FaFeed from '../components/FaFeed.astro';
+import { TEAMS } from '../data/fixtures';
+// The first team's page; the other teams are fixtures/[team].astro.
 // To go back to the hand-maintained list: import ManualFixtures and render it in place
 // of <FaFeed />, and set the section mark to "Manchester League, Division One".
+const team = TEAMS[0];
 ---
 <BaseLayout
-  title="Men's First Team Fixtures | Baguley Athletic FC"
-  description="Baguley Athletic FC men's first team fixtures, live from the Manchester Football League on FA Full-Time."
+  title="Men's First Team Fixtures & Results | Baguley Athletic FC"
+  description="Baguley Athletic FC men's first team fixtures and results, live from the Manchester Football League on FA Full-Time."
 >
   <PageHeading
     mark="Manchester Football League"
     lede="Every date, every opponent, every chance to get behind the Badgers. Home games at Ericstan Park."
-  >First team<br><em>fixtures.</em></PageHeading>
+  >First team<br><em>fixtures &amp; results.</em></PageHeading>
 
-  <FaFeed />
+  <FaFeed team={team} />
 </BaseLayout>

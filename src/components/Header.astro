@@ -23,10 +23,10 @@
         <a href="/fixtures">Teams</a>
         <div class="submenu">
           <a href="/fixtures">Men's 1st Team</a>
-          <a href="/fixtures">Development Squad</a>
-          <a href="/fixtures">Ladies 1st Team</a>
-          <a href="/fixtures">Under 18s</a>
-          <a href="/fixtures">Vets Squad</a>
+          <a href="/fixtures/development">Development Squad</a>
+          <a href="/fixtures/ladies">Ladies 1st Team</a>
+          <a href="/fixtures/under-18s">Under 18s</a>
+          <a href="/fixtures/vets">Vets Squad</a>
         </div>
       </div>
       <a href="/news">News</a>
@@ -52,7 +52,7 @@
         <a href="/commercial">Commercial Hub</a>
         <a href="/events">Events</a>
         <a href="/#contact">Contact Us</a>
-        <a href="/fixtures">Fixtures</a>
+        <a href="/fixtures">Fixtures &amp; Results</a>
       </div>
     </details>
     <a class="button button-dark nav-cta" href="/fixtures">Fixtures</a>
@@ -60,11 +60,20 @@
 </header>
 
 <script>
-  // compact the header once the page moves (collapses the topline, tightens the nav)
+  // compact the header once the page moves (collapses the topline, tightens the nav).
+  // The header is sticky, so compacting it shortens the page by ~52px and the browser pulls
+  // scrollY back by as much. A single threshold would then flip straight back and flicker;
+  // collapsing and expanding at points further apart than that shrink keeps it stable.
   const header = document.querySelector('.site-header');
+  const COLLAPSE_AT = 96;
+  const EXPAND_AT = 8;
 
   if (header) {
-    const setHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 24);
+    const setHeaderState = () => {
+      const y = window.scrollY;
+      if (y > COLLAPSE_AT) header.classList.add('is-scrolled');
+      else if (y < EXPAND_AT) header.classList.remove('is-scrolled');
+    };
     setHeaderState();
     window.addEventListener('scroll', setHeaderState, { passive: true });
   }

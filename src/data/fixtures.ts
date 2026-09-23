@@ -1,8 +1,41 @@
-// Live feed: the embed code FA Full-Time generated for the club admin. The widget script
-// looks for its container by id (lrep + lrcode), so the id and lrcode must change together.
-// This is the club's own Division One code (the earlier lrcode was a placeholder demo).
-export const FA_LRCODE = '720274018';
-export const FA_DIVISION = 'https://fulltime.thefa.com/index.html?divisionseason=981630320';
+// Live feeds: the embed codes FA Full-Time generated for the club admin, one per team.
+// The widget script looks for its container by id (lrep + lrcode) and reads a global
+// `lrcode`, so each team gets its own page with one widget on it. `lrcode` and `division`
+// (the divisionseason link) both roll over each season, so regenerate them together.
+// The first team lives at /fixtures; the others at /fixtures/<slug>.
+export interface Team {
+  slug: string;
+  name: string;         // as the Teams menu names it
+  heading: string;      // first line of the page headline; "fixtures & results." follows
+  divisionName: string; // as FA Full-Time names the division
+  lrcode: string;
+  division: string;
+}
+
+export const TEAMS: Team[] = [
+  {
+    slug: '', name: "Men's 1st Team", heading: 'First team', divisionName: 'Division One',
+    lrcode: '720274018', division: 'https://fulltime.thefa.com/index.html?divisionseason=981630320',
+  },
+  {
+    slug: 'development', name: 'Development Squad', heading: 'Development', divisionName: 'Reserve and Development Championship',
+    lrcode: '276070732', division: 'https://fulltime.thefa.com/index.html?divisionseason=757677854',
+  },
+  {
+    slug: 'ladies', name: 'Ladies 1st Team', heading: 'Ladies', divisionName: 'Division Two',
+    lrcode: '17332546', division: 'https://fulltime.thefa.com/index.html?divisionseason=631246236',
+  },
+  {
+    slug: 'under-18s', name: 'Under 18s', heading: 'Under 18s', divisionName: 'U18 Premier',
+    lrcode: '201315678', division: 'https://fulltime.thefa.com/index.html?divisionseason=322363825',
+  },
+  {
+    slug: 'vets', name: 'Vets Squad', heading: 'Vets', divisionName: 'Division 5',
+    lrcode: '827427822', division: 'https://fulltime.thefa.com/index.html?divisionseason=135406900',
+  },
+];
+
+export const teamHref = (team: Team) => (team.slug ? `/fixtures/${team.slug}` : '/fixtures');
 
 // Source: baguleyathletic.co.uk — Men's First Team Fixtures (Manchester League, Division 1)
 // NOT CURRENTLY PUBLISHED. fixtures.astro renders the live FA Full-Time feed instead;

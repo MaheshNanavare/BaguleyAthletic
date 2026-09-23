@@ -32,12 +32,15 @@ There are no tests or linter. `npm run build` is the check — it fails on templ
 ```
 src/
   layouts/BaseLayout.astro   <head>, fonts, global.css import, Header + <main> + Footer
-  components/                Header, Footer, PageHeading, ChairmanQuote, NewsBand, FaFeed, ManualFixtures
+  components/                Header, Footer, PageHeading, ChairmanQuote, NewsBand, NextMatch, FaFeed, ManualFixtures
   pages/                     index, story, fixtures, commercial, events, 404  → one .html each
+  pages/fixtures/[team]      one fixtures page per team after the first (/fixtures/ladies etc.)
   pages/news/                index (the /news list) and [slug] (one page per story)
   content/news/*.md          the news stories (schema in src/content.config.ts)
   data/                      fixtures.ts, commercial.ts, events.ts, news.ts (story helpers)
-  scripts/fa-feed.js         FA Full-Time feed tidier + matchday sheet (imported by FaFeed)
+  scripts/fa-read.js         FA Full-Time feed reader, shared by the two below
+  scripts/fa-feed.js         FA Full-Time feed tidier + season sheet (imported by FaFeed)
+  scripts/next-match.js      home page next-match board from the live feed (imported by NextMatch)
   styles/global.css          the whole stylesheet, one global file
 public/assets/               images, videos, brochure PDF — served as-is at /assets/…
 public/_headers              Cloudflare Pages headers (long cache on /_astro/*)
@@ -54,11 +57,11 @@ names, and splitting it per component would scatter it for no gain. New CSS goes
 
 Client JS lives in component `<script>` tags, which Astro bundles as modules and only emits on pages
 that use the component: the header's scroll state is in `Header.astro`, the fixtures filter in
-`ManualFixtures.astro`, and the feed logic in `FaFeed.astro` → `scripts/fa-feed.js`.
+`ManualFixtures.astro`, the feed logic in `FaFeed.astro` → `scripts/fa-feed.js`, and the home next match in `NextMatch.astro` → `scripts/next-match.js`.
 
 **Data files:**
 
-- `data/fixtures.ts` — `FA_LRCODE`/`FA_DIVISION` for the live feed, plus `FIXTURES`, the old
+- `data/fixtures.ts` — `TEAMS`, one FA Full-Time embed code + division link per team, plus `FIXTURES`, the old
   hand-maintained 24 fixtures as `[day, month, time, H|A, venue, homeTeam, awayTeam]`.
 - `data/commercial.ts` — `KITS`, `KIT_BENEFITS`, `PACKS`, transcribed from the club's Commercial
   Brochure (`public/assets/commercial-brochure.pdf`, linked for download from the commercial page).
@@ -73,24 +76,47 @@ Write plain characters in data (`&`, `—`); Astro escapes output, so HTML entit
 ## Fixtures: the FA Full-Time feed
 
 **The published fixtures page is the league's live FA Full-Time widget**, not local data.
-`FA_LRCODE` is the embed code the club admin generated; the widget script finds its container by id
-(`lrep` + lrcode) and reads a *global* `lrcode`, so in `FaFeed.astro` the div, the `var lrcode`
-script and the `cs1.js` script must stay together, in that order, and both scripts must stay
-`is:inline` (bundling or `define:vars` would scope the variable and break it). The widget lists every
-club in the division. The code points at the club's *Division One* season, so Baguley's own fixtures
-show; regenerate it each new season, since the FA rolls the season id over. The widget only loads
+Each entry in `TEAMS` (`data/fixtures.ts`) holds the embed code the club admin generated for one
+team; the widget script finds its container by id (`lrep` + lrcode) and reads a *global* `lrcode`, so
+in `FaFeed.astro` the div, the `var lrcode` script and the `cs1.js` script must stay together, in that
+order, and both scripts must stay `is:inline` (bundling or `define:vars` would scope the variable and
+break it). That global is also why there is **one team per page**: the first team at `/fixtures`, the
+others at `/fixtures/<slug>` from `pages/fixtures/[team].astro`, linked by a tab strip (`.team-tabs`)
+above the feed and by the header's Teams menu. Each code lists that team's own games for the whole
+season, played (with scores) and still to come; the page count and venues were checked live. Regenerate
+the codes each new season, since the FA rolls the season id over. The widget only loads
 from a real http(s) origin.
 
 The widget writes inline styles, some `!important`, which no stylesheet can override. So a
 `MutationObserver` on `.fa-feed` strips those attributes as the table lands and tags rows mentioning
-Baguley with `.is-ours`. It then reads the table back into a **matchday sheet** (`.matchdays`, a
-sibling of `.fa-feed` so writing it can't re-trigger the observer): one row per date with a large day
-number pinned in the left rail, games grouped under kick-off times, Baguley games as black bands
-tagged Home/Away. A played fixture's row has two extra score cells either side of the separator; once
-both are non-empty `fa-feed.js` reads them into `.md-score` in place of the plain "v", so results show
-automatically as the league enters them, with no separate results page or feed to maintain. If nothing
-parses, the sheet stays hidden and the tidied table shows with its own styling as the fallback. The
-feed's row shapes are documented above the `.fa-feed` rules in the CSS.
+Baguley with `.is-ours`. It then reads the table back into a **season sheet** (`.matchdays`, a
+sibling of `.fa-feed` so writing it can't re-trigger the observer). The **next match** is a black panel
+(`.nm-board`, goal net behind), the page's one loud element. Below it are **Still to play** and
+**Results** (newest first), both grouped by month, as quiet white rows (`.fx-row`) on one shared grid.
+Each row has date, kick-off or result mark, home and away either side of a centred score, then
+Home/Away and the venue. The Results heading carries a **form guide** of the last five results. Result
+marks stay black and white on purpose (win = filled black box, loss = empty, draw = grey), with no
+red or green, to keep to the palette. A played fixture's row has two extra score cells either side of
+the separator; once both are numbers the game counts as a result, so results show automatically as the
+league enters them, with no separate results page or feed to maintain. The split is by date, not by
+score: a game postponed ahead of its date stays under Still to play. Feed quirks handled in
+`fa-feed.js`: `00:00` means the kick-off isn't set (shown as TBC), `P`/`P` is postponed, `A`/`A` is
+abandoned, and a past game with no score reads "Result to come". The most common competition code on a
+page is taken as the team's league and left untagged; any other code (`Cup:`, `CC`) gets a Cup tag.
+If nothing parses, the sheet stays hidden and the tidied table shows with its own styling as the
+fallback. The feed's row shapes are documented above the `.fa-feed` rules in the CSS.
+
+The `.team-tabs` strip is a `<nav>`, so the header's element-level `nav>a:after` underline applies to
+it as well. That's deliberate: the underline grows on hover, and the current squad holds it at full
+width. On phones the strip scrolls sideways, and `fa-feed.js` scrolls the current squad into view.
+
+The **home page next match** (`NextMatch.astro`, the white `.scoreboard`) reads the first team's
+feed too, so it is never typed in by hand. `next-match.js` sets the global `lrcode` itself and injects
+`cs1.js` async after the page is up into a hidden `#lrep…` div; the widget works loaded late like
+this, so the home page doesn't wait on the league's server. It reads the table with the same
+`fa-read.js` parser as the fixtures page and writes the first game still going ahead into the board.
+Until then the board shows a short note (`.sb-wait`, sized to the board so nothing jumps), and after 20
+seconds without the feed it points to the fixtures page instead.
 
 `ManualFixtures.astro` still renders the old `FIXTURES` list (grouped by month, with an All / Home /
 Away filter) but isn't used. To switch back, render it in place of `<FaFeed />` in

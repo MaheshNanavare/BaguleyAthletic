@@ -354,7 +354,9 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .footer-note{font-size:12.5px;color:#7b7e7b}
 .footer-bottom{border-top:1px solid #2b2b2b;display:flex;justify-content:space-between;gap:16px;padding:18px 0;color:#7b7e7b;font-size:12.5px}
 
-/* ---------- next-match scoreboard ---------- */
+/* ---------- next-match scoreboard ----------
+   Filled by next-match.js from the first team's live feed; .sb-wait holds the space
+   (roughly the board's height, so the page doesn't jump) until it lands. */
 .board-wrap{padding-top:var(--section);padding-bottom:var(--section)}
 .scoreboard{border-bottom:1.5px solid var(--ink);padding-bottom:30px}
 .sb-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(20px,3vw,48px)}
@@ -369,6 +371,8 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .sb-day{display:block;margin-top:12px;font-size:13px;font-weight:600;color:var(--muted)}
 .sb-meta{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:30px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
 .sb-meta b{font-weight:600;color:var(--ink)}
+.sb-top.is-long .sb-name{font-size:clamp(26px,2.8vw,40px)}
+.sb-wait{display:flex;align-items:center;min-height:clamp(150px,15vw,196px);margin:0;font-size:15px;color:var(--muted)}
 .board-actions{display:flex;align-items:center;gap:28px;margin-top:30px;flex-wrap:wrap}
 
 /* ---------- fixtures page ---------- */
@@ -384,6 +388,22 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 }
 .filter:hover{color:var(--ink)}
 .filter.active{color:#fff;background:var(--ink);border-color:var(--ink)}
+/* the squads, as a tab strip: the current one sits on the rule with a heavy bar under it */
+.team-tabs{
+  position:relative;display:flex;gap:clamp(22px,2.8vw,40px);
+  margin-bottom:clamp(40px,4.4vw,60px);box-shadow:inset 0 -1.5px var(--line);
+}
+.team-tabs a{
+  position:relative;padding:0 0 15px;white-space:nowrap;
+  font-size:15px;font-weight:600;color:var(--muted);transition:color .18s;
+}
+.team-tabs a:hover{color:var(--ink)}
+.team-tabs a[aria-current]{color:var(--ink)}
+/* the tabs are a <nav>, so the header's nav>a:after underline applies too: it grows
+   under a tab on hover, and the current tab holds it at full width and heavier */
+.team-tabs a:after{height:3px}
+.team-tabs a[aria-current]:after{width:100%;height:4px}
+.team-tabs a:focus-visible{outline-offset:4px}
 .fixture-count{font-size:14px;color:var(--muted);white-space:nowrap}
 
 .month{padding-top:8px}
@@ -497,8 +517,8 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .event-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
 .event-card figcaption{padding:22px 24px;font-size:15.5px;color:var(--body);line-height:1.55}
 
-/* ---------- FA Full-Time feed (fixtures.html) ----------
-   The league's widget injects a bare table; app.js strips its inline styling on
+/* ---------- FA Full-Time feed (fixtures pages) ----------
+   The league's widget injects a bare table; fa-feed.js strips its inline styling on
    arrival, so these rules style it like any other markup. It emits three row
    shapes: a date row (one td[colspan]), a fixture row (competition, home, v,
    away, venue) and a last td[colspan] row holding a nested table of FA logo +
@@ -527,46 +547,88 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 /* before the widget arrives, its placeholder text and fallback links */
 .fa-feed > div:not(:has(table)){padding:34px 0;border-top:1.5px solid var(--ink);color:var(--muted);font-size:15px}
 .fa-feed > div:not(:has(table)) a{text-decoration:underline;text-underline-offset:3px}
-/* once app.js has read the table into the sheet below, the raw table steps aside */
+/* once fa-feed.js has read the table into the sheet below, the raw table steps aside */
 .fa-feed.is-read{display:none}
 
-/* ---------- matchday sheet ----------
-   Built by app.js from the feed. Each date is a row of the sheet: a tall day number
-   pinned in the left rail while its kick-off slots scroll past on the right. The
-   day number is the page's one loud element; everything else stays small and grey. */
-.md-summary{margin:0;padding:15px 0 0;border-top:1.5px solid var(--ink);font-size:12.5px;font-weight:600;line-height:1;color:var(--muted)}
-.md-day{display:grid;grid-template-columns:clamp(130px,13vw,170px) 1fr;gap:clamp(20px,3vw,48px);padding:clamp(30px,3.4vw,46px) 0;border-bottom:1px solid var(--line)}
-.md-day:last-of-type{border-bottom:1.5px solid var(--ink)}
-.md-date{position:sticky;top:96px;align-self:start;margin:0;text-transform:none}
-.md-num{display:block;font-size:clamp(96px,11vw,150px);line-height:.74;letter-spacing:-.02em}
-.md-when{display:block;margin-top:14px;font-family:var(--text);font-size:15px;font-weight:600;letter-spacing:0;line-height:1.2}
+/* ---------- season sheet ----------
+   Built by fa-feed.js from the feed, one team's whole season. The next match is the
+   page's one black panel and its one loud element; below it the games still to play
+   and the results (newest first) are quiet white rows grouped by month. Every row
+   shares one grid, so dates, kick-offs, result marks and scores line up down the
+   page, with the two teams either side of a centred score as on a results board. */
+.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
-.md-slot{display:grid;grid-template-columns:clamp(64px,6.4vw,84px) 1fr;gap:clamp(12px,2vw,28px);align-items:start}
-.md-slot + .md-slot{margin-top:clamp(22px,2.4vw,32px)}
-.md-kick{margin:0;padding-top:16px;font-family:var(--display);font-weight:800;font-size:clamp(26px,2.4vw,32px);line-height:1}
-.md-games{list-style:none;margin:0;padding:0}
-.md-games li + li{border-top:1px solid var(--line)}
+.nm-board{position:relative;display:block;overflow:hidden;background:var(--ink);color:#fff;padding:clamp(24px,2.6vw,34px) clamp(24px,3.6vw,52px) 0}
+.nm-board .label{display:block;position:relative;z-index:1;margin-bottom:clamp(30px,3.6vw,48px);color:#9b9e9b}
+.nm-teams{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(20px,3vw,48px)}
+.nm-name{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(36px,4.6vw,66px);line-height:.86}
+.nm-board.is-long .nm-name{font-size:clamp(30px,3.5vw,48px)}
+.nm-away{text-align:right}
+.nm-c{text-align:center}
+.nm-kick{display:block;font-family:var(--display);font-weight:800;font-size:clamp(56px,6.6vw,96px);line-height:.8}
+.nm-day{display:block;margin-top:14px;font-size:14px;font-weight:600;color:#c2c5c2;white-space:nowrap}
+.nm-meta{
+  position:relative;z-index:1;display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;
+  margin-top:clamp(34px,4vw,54px);padding:18px 0 20px;border-top:1px solid #2f2f2f;
+  font-size:14px;color:#9b9e9b;
+}
+.nm-venue{color:#fff;font-weight:600}
+.nm-when{margin-left:auto;color:#fff;font-weight:600}
+.nm .fx-side.is-home{background:#fff;color:var(--ink)}
+a.nm-board:hover .nm-venue{text-decoration:underline;text-underline-offset:3px}
 
-.md-game{display:block;padding:16px 18px 17px;transition:background .15s}
-a.md-game:hover{background:var(--paper-2)}
-.md-teams{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;font-size:clamp(18px,1.6vw,21px);font-weight:600;line-height:1.25;color:var(--ink)}
-.md-v{font-size:13px;font-weight:400;color:var(--muted)}
-.md-score{font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:.02em;color:var(--ink)}
-.md-meta{display:flex;align-items:center;gap:12px;margin-top:7px;font-size:13.5px;color:var(--muted)}
-.md-venue{flex:1;min-width:0}
-.md-comp{flex:none;font-size:12px;font-weight:600}
-.md-side{flex:none;font-size:12px;font-weight:600;padding:2px 9px;background:var(--paper);color:var(--ink)}
-.md-side-away{background:var(--away)}
+.fx-block{margin-top:clamp(56px,6vw,92px)}
+.fx-head{
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px 24px;
+  padding-top:18px;border-top:1.5px solid var(--ink);font-size:clamp(38px,4.2vw,58px);
+}
+.fx-aside{font-family:var(--text);font-size:14px;font-weight:600;text-transform:none;letter-spacing:0;line-height:1;color:var(--muted);padding-bottom:3px}
+.fx-form{display:flex;align-items:center;gap:5px}
+.fx-form>.visually-hidden+.fx-mark{margin-left:7px}
+.fx-month{
+  margin:0;padding:clamp(28px,3vw,40px) 0 12px;border-bottom:1px solid var(--line);
+  font-family:var(--text);font-size:12.5px;font-weight:600;text-transform:none;letter-spacing:.015em;line-height:1;color:var(--muted);
+}
+.fx-list{list-style:none;margin:0;padding:0}
+.fx-list li + li{border-top:1px solid var(--line)}
 
-/* our own games: the badger-black band, the only filled rows on the sheet */
-.md-game.is-ours{background:var(--ink);color:#fff}
-.md-game.is-ours .md-teams{color:#fff}
-.md-game.is-ours .md-meta,.md-game.is-ours .md-v{color:#9b9e9b}
-.md-game.is-ours .md-score{color:#fff}
-a.md-game.is-ours:hover{background:#262626}
-.md-games li:has(.is-ours) + li,.md-games li + li:has(.is-ours){border-top-color:transparent}
+.fx-row{
+  display:grid;grid-template-columns:64px 56px minmax(0,1fr) minmax(0,.56fr);align-items:center;
+  gap:clamp(14px,2vw,28px);padding:17px 12px;transition:background .15s;
+}
+a.fx-row:hover{background:var(--paper-2)}
+.fx-date{font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.fx-date b{font-family:var(--display);font-weight:800;font-size:30px;line-height:.8;color:var(--ink);margin-right:4px}
+.fx-kick{font-family:var(--display);font-weight:800;font-size:22px;line-height:1}
 
-.md-links{display:flex;flex-wrap:wrap;gap:28px;margin:26px 0 0;font-size:15px}
+/* result marks, in the club's black and white only: a win is the filled black box,
+   a loss the empty one, a draw grey; anything not a result is dashed */
+.fx-mark{
+  display:inline-grid;place-items:center;width:28px;height:28px;flex:none;
+  font-family:var(--display);font-weight:800;font-size:17px;line-height:1;
+  border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);
+}
+.fx-mark.is-won{background:var(--ink);color:#fff}
+.fx-mark.is-drawn{background:var(--line);border-color:var(--line)}
+.fx-mark.is-postponed,.fx-mark.is-abandoned,.fx-mark.is-pending,.fx-mark.is-other{border:1.5px dashed var(--line-2);color:var(--muted)}
+.fx-form .fx-mark{width:22px;height:22px;font-size:14px}
+
+.fx-tie{display:grid;grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr);align-items:center;gap:12px;font-size:16.5px;font-weight:600;line-height:1.25}
+.fx-team{display:flex;align-items:center;gap:14px;min-width:0}
+.fx-home{justify-content:flex-end;text-align:right}
+.fx-away .fx-goals{order:-1}
+.fx-goals{flex:none;min-width:.62em;font-family:var(--display);font-weight:800;font-size:28px;line-height:.8;text-align:center}
+.fx-sep{text-align:center;font-size:13px;font-weight:400;color:var(--muted)}
+
+.fx-meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;font-size:13.5px;line-height:1.35;color:var(--muted)}
+.fx-side{flex:none;font-size:12px;font-weight:600;line-height:1.5;padding:1px 9px;background:var(--ink);color:#fff}
+.fx-side.is-away{background:var(--away);color:var(--ink)}
+.fx-comp{flex:none;font-size:12px;font-weight:600;line-height:1.5;padding:0 8px;border:1px solid var(--line-2);color:var(--ink)}
+.fx-venue{min-width:0}
+.fx-note{flex-basis:100%;font-weight:600;color:var(--ink)}
+
+.fx-links{display:flex;flex-wrap:wrap;gap:28px;margin:clamp(40px,4.4vw,60px) 0 0;padding-top:20px;border-top:1.5px solid var(--ink)}
+.matchdays:has(.fx-links) + .fa-source{margin-top:18px}
 
 /* ---------- responsive ---------- */
 @media(max-width:900px){
@@ -619,21 +681,41 @@ a.md-game.is-ours:hover{background:#262626}
   .fa-feed td[colspan]{width:auto;grid-area:auto;grid-column:1/-1;padding:30px 0 10px;border-bottom:1.5px solid var(--ink);font-size:24px;text-align:left}
   .fa-feed tr:last-child{display:flex;align-items:center;gap:12px}
   .fa-feed tr:last-child td{padding:22px 0 0;border-bottom:0}
-  /* the rail folds into a date line above the day's games */
-  .md-day{grid-template-columns:1fr;gap:18px}
-  .md-date{position:static;display:flex;align-items:flex-end;gap:14px}
-  .md-num{font-size:84px}
-  .md-when{margin:0 0 4px}
-  .md-slot{grid-template-columns:1fr;gap:4px}
-  .md-kick{padding-top:0}
-  .md-game{padding:13px 14px 14px}
-  .md-game:not(.is-ours){padding-inline:0}
-  a.md-game:not(.is-ours):hover{background:none}
-  .md-teams{column-gap:9px}
+  /* the team tabs scroll sideways rather than wrap */
+  .team-tabs{overflow-x:auto;scrollbar-width:none;gap:24px;margin-bottom:36px}
+  .team-tabs::-webkit-scrollbar{display:none}
+  .team-tabs a{font-size:14.5px}
+  /* next match stacks: kick-off and date first, then the two sides */
+  .nm-board{padding:28px 20px 0}
+  .nm-teams{grid-template-columns:1fr;gap:12px}
+  .nm-c{order:-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;text-align:left;margin-bottom:10px}
+  .nm-kick{font-size:60px}
+  .nm-day{margin:0;white-space:normal}
+  .nm-name{font-size:clamp(34px,10.5vw,48px)}
+  .nm-away{text-align:left}
+  .nm-away:before{content:'v';display:block;margin-bottom:10px;font-family:var(--text);font-size:14px;font-weight:600;text-transform:none;color:#9b9e9b}
+  .nm-meta{margin-top:28px}
+  /* a row stacks the two sides, each with its goals at the right, BBC-style */
+  .fx-row{
+    grid-template-columns:40px minmax(0,1fr) auto;grid-template-areas:"date tie mark" "date meta meta";
+    align-items:start;column-gap:14px;row-gap:9px;padding:15px 0;
+  }
+  a.fx-row:hover{background:none}
+  .fx-date{grid-area:date;display:flex;flex-direction:column;gap:7px;padding-top:2px}
+  .fx-date b{margin:0;font-size:28px}
+  .fx-row>.fx-kick,.fx-row>.fx-mark{grid-area:mark}
+  .fx-kick{padding-top:2px}
+  .fx-tie{grid-area:tie;grid-template-columns:1fr;gap:5px;font-size:16px}
+  .fx-sep{display:none}
+  .fx-team,.fx-home{justify-content:space-between;text-align:left}
+  .fx-away .fx-goals{order:0}
+  .fx-goals{font-size:24px}
+  .fx-meta{grid-area:meta}
   .sb-top{grid-template-columns:1fr;gap:22px}
   .sb-right{justify-content:flex-start;text-align:left;flex-direction:row-reverse}
   .sb-c{text-align:left;display:flex;align-items:baseline;gap:18px}
   .sb-day{margin-top:0}
+  .sb-wait{min-height:250px}
   .partner-row{justify-content:flex-start;gap:26px}
   .partner-row img{height:38px}
   .footer-main{grid-template-columns:1fr 1fr;gap:32px}
