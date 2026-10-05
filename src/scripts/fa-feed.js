@@ -36,7 +36,7 @@ const row = (g, showDate) => {
           <span class="fx-sep" aria-hidden="true">${scored ? '–' : 'v'}</span>
           <span class="fx-team fx-away"><span class="fx-name">${esc(g.away)}</span>${goals(g.awayScore)}</span>
         </span>
-        <span class="fx-meta">${sideTag(g)}${g.comp ? `<span class="fx-comp">${esc(g.comp)}</span>` : ''}<span class="fx-venue">${esc(g.venue)}</span>${note}</span>
+        <span class="fx-meta">${sideTag(g)}${g.comp ? `<span class="fx-comp">${esc(g.comp)}</span>` : ''}${g.venue ? `<span class="fx-venue">${esc(g.venue)}</span>` : ''}${note}</span>
       </${tag}>
     </li>`;
 };
@@ -77,7 +77,7 @@ const nextMatch = (g, division) => {
           <span class="nm-name nm-away">${esc(g.away)}</span>
         </span>
         <span class="nm-meta">
-          ${sideTag(g)}<span class="nm-venue">${esc(g.venue)}</span>
+          ${sideTag(g)}${g.venue ? `<span class="nm-venue">${esc(g.venue)}</span>` : ''}
           <span class="nm-comp">${esc(g.comp || division)}</span>
           <span class="nm-when">${when}</span>
         </span>

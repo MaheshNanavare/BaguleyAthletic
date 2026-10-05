@@ -217,6 +217,11 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .intro-copy p{font-size:17.5px;color:var(--body);margin:0 0 20px}
 .intro-copy p:last-of-type{margin-bottom:30px}
 
+/* home: Our story and the chairman's welcome side by side, each column opening
+   with its own section mark so the two rules line up across the top */
+.welcome{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4.4vw,64px);padding-block:var(--section);align-items:start}
+.welcome h2{font-size:clamp(40px,4.2vw,62px);margin-bottom:clamp(24px,2.6vw,34px)}
+
 /* ---------- history timeline ----------
    The club's history is a real chronology with a real gap in it (2007–13,
    the years it went quiet), so the timeline draws that gap rather than
@@ -290,30 +295,10 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .feature-grid-3{grid-template-columns:repeat(3,1fr)}
 .feature{min-height:420px;padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;align-items:flex-start}
 .feature h3{font-size:clamp(38px,4vw,56px);margin-bottom:26px}
-.feature-dark{background:var(--ink);color:#fff}
-.feature-dark .label{color:#9b9e9b}
 .feature-light{background:var(--paper-2);justify-content:flex-end}
 .feature-light .label{margin-bottom:auto}
 .feature-light p:not(.label){max-width:36ch;margin:0 0 26px;font-size:16.5px;color:var(--body)}
 
-/* the five squads, as an actual list — this used to be a run of middle dots */
-.squad-list{list-style:none;margin:0 0 28px;padding:0;width:100%}
-.squad-list li{
-  display:flex;justify-content:space-between;gap:16px;align-items:baseline;
-  padding:11px 0;border-top:1px solid rgba(255,255,255,.18);font-size:16px;
-}
-.squad-list li:first-child{border-top:0}
-.squad-list span{font-size:13px;color:#9b9e9b}
-/* the pair of cards share a row, so pin the button to the bottom of the taller one */
-.feature-dark .button{margin-top:auto}
-
-/* photo panel — the home page needs an actual photograph below the fold */
-.photo-card{position:relative;margin:0;overflow:hidden;background:var(--ink);display:flex;flex-direction:column}
-.photo-card img{width:100%;aspect-ratio:3/2;flex:none;object-fit:cover;object-position:50% 26%}
-.photo-card figcaption{margin-top:auto}
-.photo-card figcaption{background:var(--ink);color:#fff;padding:clamp(24px,2.6vw,32px)}
-.photo-card h3{font-size:clamp(32px,3.4vw,46px);margin-bottom:14px}
-.photo-card p{margin:0 0 20px;color:#c2c5c2;font-size:16px;max-width:38ch}
 
 /* ---------- story page videos ---------- */
 .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-bottom:20px}
@@ -332,6 +317,12 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .quote p:not(.label){margin:26px 0 0;color:var(--body);max-width:64ch}
 .quote cite{display:block;margin-top:28px;font-style:normal;font-size:14px;font-weight:600}
 .quote cite span{display:block;font-weight:400;color:var(--muted);margin-top:2px}
+/* the home page's side-by-side variant, one column beside Our story */
+.quote-side .quote{border-top:0;padding:0;grid-template-columns:1fr;gap:26px}
+.quote-side .badge{width:64px;height:64px}
+.quote-side .badge img{width:40px;height:40px}
+.quote-side blockquote{font-size:clamp(30px,3vw,42px);max-width:16ch}
+.quote-side .quote p:not(.label){font-size:16.5px}
 
 /* ---------- partners ---------- */
 .partners{padding:var(--section) 0}
@@ -339,6 +330,32 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .partner-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:clamp(28px,4vw,56px);margin-top:44px}
 .partner-row img{height:48px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.75;transition:filter .25s,opacity .25s}
 .partner-row img:hover{filter:none;opacity:1}
+.partner-row a{display:block}
+
+/* /partners: one row per partner, the logo in a white tile (they are small rasters
+   with their own backgrounds, so they keep their colour here, unlike the home row) */
+.partner-list{padding-bottom:var(--section)}
+.partner{display:grid;grid-template-columns:260px 1fr;gap:clamp(28px,4vw,56px);align-items:center;padding:clamp(28px,3.4vw,44px) 0;border-top:1px solid var(--line-2)}
+.partner:first-child{border-top:1.5px solid var(--ink)}
+.partner-logo{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;border:1px solid var(--line);background:#fff;padding:28px}
+.partner-logo img{max-height:100%;max-width:100%;object-fit:contain}
+.partner h2{font-size:clamp(30px,3.2vw,44px);margin-bottom:16px}
+.partner p:not(.label){margin:0 0 20px;color:var(--body);max-width:60ch;font-size:16.5px}
+
+/* /social: the platforms as big type tiles — no brand marks, so they stay in palette */
+.social-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+/* five platforms: the two biggest across the top, the other three beneath */
+.social-grid>*{grid-column:span 2}
+.social-grid>:nth-child(-n+2){grid-column:span 3}
+.social-card{position:relative;display:flex;flex-direction:column;min-height:240px;padding:clamp(24px,2.8vw,34px);background:var(--paper-2);transition:background .2s,color .2s}
+.social-card h2{font-size:clamp(44px,4.4vw,64px);margin-top:auto}
+.social-card p:not(.label){margin:14px 0 0;color:var(--body);font-size:15.5px;max-width:30ch;transition:color .2s}
+.social-go{position:absolute;top:clamp(20px,2.4vw,28px);right:clamp(22px,2.6vw,30px);font-size:24px;line-height:1}
+.social-card:hover{background:var(--ink);color:#fff}
+.social-card:hover p{color:#c2c5c2}
+.social-tag{padding-block:var(--section)}
+.social-tag p{margin:0;padding-top:20px;border-top:1.5px solid var(--ink);font-size:17px;color:var(--body)}
+.social-tag strong{color:var(--ink)}
 
 /* ---------- footer ---------- */
 .site-footer{background:var(--ink);color:#fff}
@@ -507,7 +524,7 @@ nav>a:hover:after,.nav-item:hover>a:after,.nav-item:focus-within>a:after{width:1
 .cta-side{border-left:1px solid #2f2f2f;padding-left:clamp(28px,3.4vw,46px)}
 .cta-label{margin:0;font-size:13px;color:#9b9e9b}
 .cta-name{margin:8px 0 0;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:36px;line-height:1}
-.cta-mail{display:inline-block;margin:12px 0 30px;border-bottom:1px solid #6a6a65;padding-bottom:3px;font-size:15.5px}
+.cta-mail{display:table;margin:12px 0 30px;border-bottom:1px solid #6a6a65;padding-bottom:3px;font-size:15.5px}
 .cta-mail:hover{border-bottom-color:#fff}
 .cta-note{margin:14px 0 0;font-size:13px;color:#9b9e9b}
 
@@ -636,10 +653,14 @@ a.fx-row:hover{background:var(--paper-2)}
   .hero-side{padding-bottom:0}
   .news-grid{grid-template-columns:1fr}
   .intro{grid-template-columns:1fr;gap:32px}
+  .welcome{grid-template-columns:1fr;gap:56px}
+  .partner{grid-template-columns:1fr;gap:24px}
+  .partner-logo{max-width:260px}
+  .social-grid{grid-template-columns:1fr 1fr}
+  .social-grid>*,.social-grid>:nth-child(-n+2){grid-column:auto}
   .intro-copy{align-self:start}
   .feature-grid,.feature-grid-3{grid-template-columns:1fr}
   .feature{min-height:0}
-  .photo-card img{aspect-ratio:4/3;flex:none}
   .video-grid{grid-template-columns:1fr}
   .quote{grid-template-columns:1fr;gap:28px}
   .intro-grid{grid-template-columns:1fr;gap:28px}
@@ -718,6 +739,8 @@ a.fx-row:hover{background:var(--paper-2)}
   .sb-wait{min-height:250px}
   .partner-row{justify-content:flex-start;gap:26px}
   .partner-row img{height:38px}
+  .social-grid{grid-template-columns:1fr}
+  .social-card{min-height:190px}
   .footer-main{grid-template-columns:1fr 1fr;gap:32px}
   .footer-main>div:first-child{grid-column:1/-1}
   .footer-bottom{flex-direction:column;gap:6px}

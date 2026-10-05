@@ -33,11 +33,11 @@ There are no tests or linter. `npm run build` is the check — it fails on templ
 src/
   layouts/BaseLayout.astro   <head>, fonts, global.css import, Header + <main> + Footer
   components/                Header, Footer, PageHeading, ChairmanQuote, NewsBand, NextMatch, FaFeed, ManualFixtures
-  pages/                     index, story, fixtures, commercial, events, 404  → one .html each
+  pages/                     index, story, fixtures, commercial, partners, social, events, 404  → one .html each
   pages/fixtures/[team]      one fixtures page per team after the first (/fixtures/ladies etc.)
   pages/news/                index (the /news list) and [slug] (one page per story)
   content/news/*.md          the news stories (schema in src/content.config.ts)
-  data/                      fixtures.ts, commercial.ts, events.ts, news.ts (story helpers)
+  data/                      fixtures.ts, commercial.ts, partners.ts, socials.ts, events.ts, news.ts (story helpers)
   scripts/fa-read.js         FA Full-Time feed reader, shared by the two below
   scripts/fa-feed.js         FA Full-Time feed tidier + season sheet (imported by FaFeed)
   scripts/next-match.js      home page next-match board from the live feed (imported by NextMatch)
@@ -68,6 +68,9 @@ that use the component: the header's scroll state is in `Header.astro`, the fixt
   These are the client's real prices; check the PDF before changing a number. Each kit points at its
   product photo in `public/assets/Kits/` plus a `bg` hex sampled from the PNG's own baked-in backdrop
   so the photo sits flush in its panel; resample it if a kit photo is ever replaced.
+- `data/partners.ts` — the partners (logo, link, one-line about), shown in full on `/partners` and as the
+  logo row on the home page. `data/socials.ts` — the club's social accounts for `/social` (Go Social).
+  The header's Commercial Hub menu has just two entries: Our Partners and the sponsor brochure PDF.
 - `data/events.ts` — photo + caption pairs for the events gallery. Captions describe only what's
   visible in each photo; there's no event calendar or dates behind this yet.
 
@@ -83,7 +86,7 @@ order, and both scripts must stay `is:inline` (bundling or `define:vars` would s
 break it). That global is also why there is **one team per page**: the first team at `/fixtures`, the
 others at `/fixtures/<slug>` from `pages/fixtures/[team].astro`, linked by a tab strip (`.team-tabs`)
 above the feed and by the header's Teams menu. Each code lists that team's own games for the whole
-season, played (with scores) and still to come; the page count and venues were checked live. Regenerate
+season, cup ties included, played (with scores) and still to come; the page count and venues were checked live. Regenerate
 the codes each new season, since the FA rolls the season id over. The widget only loads
 from a real http(s) origin.
 
@@ -104,7 +107,9 @@ score: a game postponed ahead of its date stays under Still to play. Feed quirks
 abandoned, and a past game with no score reads "Result to come". The most common competition code on a
 page is taken as the team's league and left untagged; any other code (`Cup:`, `CC`) gets a Cup tag.
 If nothing parses, the sheet stays hidden and the tidied table shows with its own styling as the
-fallback. The feed's row shapes are documented above the `.fa-feed` rules in the CSS.
+fallback. The feed's row shapes are documented above the `.fa-feed` rules in the CSS. The 2026/27 codes were
+generated **without the venue column**, so `fa-read.js` finds the `v`/`-` separator cell rather than
+counting cells, and the venue is optional everywhere it is shown; regenerate with venues on to get them back.
 
 The `.team-tabs` strip is a `<nav>`, so the header's element-level `nav>a:after` underline applies to
 it as well. That's deliberate: the underline grows on hover, and the current squad holds it at full

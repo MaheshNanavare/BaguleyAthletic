@@ -61,19 +61,21 @@ export const readFeed = (feed) => {
         entry.slots.push(slot);
       }
     } else if (cells.length >= 4 && slot) {
-      // Comp and home are always cells[0]/[1]; venue is always the last cell and away the
-      // one before it. Between home and away sits either just a separator ("v"/"-", 5 cells
-      // total) or a separator flanked by two score cells (7 cells, once a result is in) —
-      // reading from the end keeps both shapes working instead of assuming a fixed index.
+      // Comp and home are always cells[0]/[1]. Then comes either just a separator ("v"/"-")
+      // or a separator flanked by two score cells, then away, then the venue — but only if
+      // the embed code was generated with venues on (the 2026/27 codes weren't). So find the
+      // separator and read from there: 4–7 cells all work without assuming a fixed index.
       const link = row.querySelector('a');
-      const hasScore = cells.length >= 7;
+      const sep = cells.findIndex((td, i) => i >= 2 && /^(v|vs|-)$/i.test(cellText(td)));
+      const hasScore = sep === 3;
+      const awayAt = sep > 0 ? sep + (hasScore ? 2 : 1) : cells.length - 2;
       slot.games.push({
         comp: cellText(cells[0]).replace(/:$/, ''),
         home: teamName(cellText(cells[1])),
         homeScore: hasScore ? cellText(cells[2]) : '',
-        away: teamName(cellText(cells[cells.length - 2])),
-        awayScore: hasScore ? cellText(cells[cells.length - 3]) : '',
-        venue: venueName(cellText(cells[cells.length - 1])),
+        away: teamName(cellText(cells[awayAt])),
+        awayScore: hasScore ? cellText(cells[sep + 1]) : '',
+        venue: venueName(cellText(cells[awayAt + 1])),
         href: link ? link.href : '',
       });
     }

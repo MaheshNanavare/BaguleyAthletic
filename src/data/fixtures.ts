@@ -15,23 +15,23 @@ export interface Team {
 export const TEAMS: Team[] = [
   {
     slug: '', name: "Men's 1st Team", heading: 'First team', divisionName: 'Division One',
-    lrcode: '720274018', division: 'https://fulltime.thefa.com/index.html?divisionseason=981630320',
+    lrcode: '901504094', division: 'https://fulltime.thefa.com/index.html?divisionseason=981630320',
   },
   {
     slug: 'development', name: 'Development Squad', heading: 'Development', divisionName: 'Reserve and Development Championship',
-    lrcode: '276070732', division: 'https://fulltime.thefa.com/index.html?divisionseason=757677854',
+    lrcode: '556257609', division: 'https://fulltime.thefa.com/index.html?divisionseason=757677854',
   },
   {
     slug: 'ladies', name: 'Ladies 1st Team', heading: 'Ladies', divisionName: 'Division Two',
-    lrcode: '17332546', division: 'https://fulltime.thefa.com/index.html?divisionseason=631246236',
+    lrcode: '155335748', division: 'https://fulltime.thefa.com/index.html?divisionseason=631246236',
   },
   {
     slug: 'under-18s', name: 'Under 18s', heading: 'Under 18s', divisionName: 'U18 Premier',
-    lrcode: '201315678', division: 'https://fulltime.thefa.com/index.html?divisionseason=322363825',
+    lrcode: '166356543', division: 'https://fulltime.thefa.com/index.html?divisionseason=322363825',
   },
   {
     slug: 'vets', name: 'Vets Squad', heading: 'Vets', divisionName: 'Division 5',
-    lrcode: '827427822', division: 'https://fulltime.thefa.com/index.html?divisionseason=135406900',
+    lrcode: '301785585', division: 'https://fulltime.thefa.com/index.html?divisionseason=135406900',
   },
 ];
 

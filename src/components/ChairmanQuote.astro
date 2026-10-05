@@ -1,19 +1,36 @@
 ---
 // The chairman's pull-quote; the default slot holds the paragraphs under the blockquote.
+// `side` renders it as one column of a pair (the home page sets it beside Our story):
+// no section wrapper of its own, and the label becomes the column's section mark.
 interface Props {
   quote: string;
+  side?: boolean;
 }
 
-const { quote } = Astro.props;
+const { quote, side = false } = Astro.props;
 ---
-<section class="container">
-  <div class="quote">
-    <span class="badge"><img src="/assets/badge-white-hd.png" alt=""></span>
-    <div>
-      <p class="label">Chairman's welcome</p>
-      <blockquote>&ldquo;{quote}&rdquo;</blockquote>
-      <slot />
-      <cite>David Platt<span>Club Chairman</span></cite>
+{side ? (
+  <div class="quote-side">
+    <p class="section-mark">Chairman's welcome</p>
+    <div class="quote">
+      <span class="badge"><img src="/assets/badge-white-hd.png" alt=""></span>
+      <div>
+        <blockquote>&ldquo;{quote}&rdquo;</blockquote>
+        <slot />
+        <cite>David Platt<span>Club Chairman</span></cite>
+      </div>
     </div>
   </div>
-</section>
+) : (
+  <section class="container">
+    <div class="quote">
+      <span class="badge"><img src="/assets/badge-white-hd.png" alt=""></span>
+      <div>
+        <p class="label">Chairman's welcome</p>
+        <blockquote>&ldquo;{quote}&rdquo;</blockquote>
+        <slot />
+        <cite>David Platt<span>Club Chairman</span></cite>
+      </div>
+    </div>
+  </section>
+)}

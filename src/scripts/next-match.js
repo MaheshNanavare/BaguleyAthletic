@@ -36,7 +36,7 @@ const render = (g) => {
       ${side(g.away, true)}
     </div>
     <p class="sb-meta">
-      <span><b>${esc(g.venue)}</b>${esc(address)}</span>
+      ${g.venue ? `<span><b>${esc(g.venue)}</b>${esc(address)}</span>` : ''}
       <span>${esc(g.comp || board.dataset.division)}</span>
     </p>`;
 };

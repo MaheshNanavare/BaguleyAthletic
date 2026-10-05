@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import { PARTNERS } from '../data/partners';
+---
+<BaseLayout
+  title="Our Partners | Baguley Athletic FC"
+  description="The businesses and local causes that partner with Baguley Athletic FC, Wythenshawe."
+>
+  <PageHeading
+    mark="Our partners"
+    lede="Front of shirt on both kits is gifted to local causes. The rest of our partners back the club on and off the pitch."
+  >The company<br><em>we keep.</em></PageHeading>
+
+  <section class="container partner-list">
+    {PARTNERS.map(({ slug, name, role, logo, url, site, about }) => (
+      <article class="partner" id={slug}>
+        <a class="partner-logo" href={url} target="_blank" rel="noopener"><img src={logo} alt={name} loading="lazy"></a>
+        <div>
+          <p class="label">{role}</p>
+          <h2>{name}</h2>
+          <p>{about}</p>
+          <a class="text-link" href={url} target="_blank" rel="noopener">{site} <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </article>
+    ))}
+  </section>
+
+  <section class="commercial-cta">
+    <div class="container cta-inner">
+      <div>
+        <p class="label">Join them</p>
+        <h2>Become a<br><em>Badgers partner.</em></h2>
+        <p class="cta-copy">Kit, matchday, player and pitch-side packages, set out in full in our sponsor brochure.</p>
+      </div>
+      <div class="cta-side">
+        <p class="cta-label">Head of Commercial Operations</p>
+        <p class="cta-name">John Ewbank</p>
+        <a class="cta-mail" href="mailto:jewbank@baguleyathletic.co.uk">jewbank@baguleyathletic.co.uk</a>
+        <a class="button button-onblack" href="/assets/commercial-brochure.pdf" target="_blank" rel="noopener">Sponsor brochure <span aria-hidden="true">&darr;</span></a>
+        <p class="cta-note">PDF, 8 pages &middot; <a class="text-link" href="/commercial">All packages</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

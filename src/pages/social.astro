@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeading from '../components/PageHeading.astro';
+import { SOCIALS } from '../data/socials';
+---
+<BaseLayout
+  title="Go Social | Baguley Athletic FC"
+  description="Follow Baguley Athletic FC on Facebook, Instagram, X, YouTube and LinkedIn."
+>
+  <PageHeading
+    mark="Go social"
+    lede="Matchday updates, results, behind the scenes and club news — follow the Badgers wherever you are."
+  >Follow<br><em>the Badgers.</em></PageHeading>
+
+  <section class="container social-grid">
+    {SOCIALS.map(({ name, handle, url, blurb }) => (
+      <a class="social-card" href={url} target="_blank" rel="noopener">
+        <p class="label">{handle}</p>
+        <h2>{name}</h2>
+        <p>{blurb}</p>
+        <span class="social-go" aria-hidden="true">&nearr;</span>
+      </a>
+    ))}
+  </section>
+
+  <section class="container social-tag">
+    <p>Tag your photos <strong>#WeAreBaguley</strong></p>
+  </section>
+</BaseLayout>
