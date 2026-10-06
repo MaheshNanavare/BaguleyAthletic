@@ -28,7 +28,7 @@ export const PARTNERS: Partner[] = [
     about: 'Team-wear, footballs and equipment for grassroots clubs across the UK, from Wilmslow.',
   },
   {
-    slug: 'yeep', name: 'Yeep!', role: 'Club partner',
+    slug: 'yeep', name: 'Yeep!', role: 'Development team sponsor',
     logo: '/assets/partner-yeep.png', url: 'https://yeeplockers.com/', site: 'yeeplockers.com',
     about: 'Eco-friendly local parcel lockers — "your community, eco-friendly local parcel place."',
   },
